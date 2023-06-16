@@ -16,13 +16,11 @@
  * database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
 
-import { getServerAuthSession } from "../auth";
 import { prisma } from "../db";
 
 type CreateContextOptions = {
-  session: Session | null;
+  session: null;
 };
 
 /**
@@ -48,15 +46,15 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  // const session = await getServerAuthSession({ req, res });
 
-  return createInnerTRPCContext({
-    session,
-  });
+  // return createInnerTRPCContext({
+  //   session,
+  // });
 };
 
 /**
@@ -103,13 +101,13 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+  // if (!ctx.session || !ctx.session.user) {
+  //   throw new TRPCError({ code: "UNAUTHORIZED" });
+  // }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // session: { ...ctx.session, user: ctx.session.user },
     },
   });
 });

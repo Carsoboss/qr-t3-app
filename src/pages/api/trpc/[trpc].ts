@@ -7,7 +7,7 @@ import { appRouter } from "../../../server/api/root";
 // export API handler
 export default createNextApiHandler({
   router: appRouter,
-  createContext: createTRPCContext,
+  // createContext: createTRPCContext,
   onError:
     env.NODE_ENV === "development"
       ? ({ path, error }) => {
