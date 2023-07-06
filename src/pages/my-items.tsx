@@ -126,6 +126,7 @@ export default function MyItems() {
                       <div className="mt-6 w-full sm:mt-0 sm:ml-6">
                         <div className="flex w-full items-center justify-between">
                           <h3 className="text-base font-medium text-gray-900">
+                            {/* todo put device name above sticker name */}
                             <a href={product.href}>{product.name}</a>
                           </h3>
                           <a

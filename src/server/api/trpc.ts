@@ -53,7 +53,6 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   // const session = await getServerAuthSession({ req, res });
 
   // return createInnerTRPCContext({
-  //   session,
   // });
 };
 
