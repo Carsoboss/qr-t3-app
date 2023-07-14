@@ -1,20 +1,20 @@
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
+
+import { SignOutButton } from "@clerk/nextjs";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
   UserCircleIcon,
-  UserIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "../../utils/classNames";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
+  { name: "Home", href: "/", current: false },
   { name: "New Item", href: "/new-item", current: false },
-  { name: "My Stickers", href: "#", current: false },
+  { name: "My Stickers", href: "/my-stickers", current: false },
+  { name: "Shop", href: "http://shop.qrfound.cool", current: false },
 ];
 
 export default function Navbar() {
@@ -40,12 +40,12 @@ export default function Navbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500"
+                    src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/landing%20page%2FJeffory.svg?alt=media&token=593e899d-88cd-4b08-8f7c-43305716caba"
                     alt="Your Company"
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500"
+                    src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/landing%20page%2FJeffory.svg?alt=media&token=593e899d-88cd-4b08-8f7c-43305716caba"
                     alt="Your Company"
                   />
                 </div>
@@ -70,29 +70,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Notification button */}
-                {/* <button
-                  type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
-
-                {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
-                  {/* with profile photo */}
-                  {/* <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div> */}
-                  {/* without profile photo */}
                   <Menu.Button className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">Open user menu</span>
                     <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
@@ -140,18 +118,17 @@ export default function Navbar() {
                         )}
                       </Menu.Item>
                       <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                         {({ active }) => (
+                            <div
+                                className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                                 )}
+                                 >
+                                     <SignOutButton>Sign out</SignOutButton>
+                            </div>
                             )}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
+                    </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 
 export default function Hero() {
 
@@ -40,7 +39,7 @@ export default function Hero() {
             Welcome to QRfound
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            QRfound allows you to add your information to a QR code sticker and
+            QRfound allows you to add your information to a QR code sticker so you will
             never lose your items again.
           </p>
           <div className="mt-10 flex items-center gap-x-6">

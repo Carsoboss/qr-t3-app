@@ -69,7 +69,7 @@ const Welcome: NextPage = () => {
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               QRfound allows you to add your information to a QR code sticker
-              and never lose your items again.
+              so you will never lose your items again.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <a
