@@ -1,4 +1,4 @@
-import Image from 'next/image'
+
 
 export default function Example() {
   return (
@@ -18,7 +18,7 @@ export default function Example() {
               Item Lost
             </h2>
             <img
-              className="mx-auto mt-6 mb-4 h-72 w-auto"
+              className="mx-auto mt-6 mb-4 h-60 w-auto"
               src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/sticker%20type%20images%2FAstronaut_ScanMe_NoOutline.png?alt=media&token=225ee9b9-e4d9-475e-8d00-729c834cd6a6"
               alt="Your Company"
             />
@@ -32,7 +32,7 @@ export default function Example() {
           <form className="mt-8 space-y-6" action="#" method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
 
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-5">
               <button
                 type="submit"
                 className="inline-flex justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 w-full"
