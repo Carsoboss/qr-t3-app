@@ -1,4 +1,7 @@
-import { useRef } from "react";
+import React, { useState } from "react";
+import QrReader from "react-qr-reader";
+
+
 const products = [
   {
     id: 1,
@@ -25,7 +28,7 @@ const products = [
   // More products...
 ];
 
-export default function MyItems() {
+export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
 
   return (
@@ -34,17 +37,8 @@ export default function MyItems() {
         <div className="space-y-2 px-4 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 sm:px-0">
           <div className="flex w-full items-center justify-between sm:items-baseline sm:space-x-4">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              My Items
+              My Stickers
             </h1>
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Add another
-              </a>
-            </div>
           </div>
         </div>
 
@@ -99,6 +93,11 @@ export default function MyItems() {
                 </div>
               </>
             ))}
+               <div className="flex items-center justify-center">
+                 <a href="lost-item" className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    Lost Item Page
+                </a>
+            </div>
           </div>
         </section>
       </main>

@@ -5,17 +5,16 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
   UserCircleIcon,
-  UserIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "../../utils/classNames";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
+  { name: "Home", href: "/", current: false },
   { name: "New Item", href: "/new-item", current: false },
-  { name: "My Stickers", href: "my-items", current: false },
+  { name: "My Stickers", href: "/my-stickers", current: false },
+  { name: "Shop", href: "http://shop.qrfound.cool", current: false },
 ];
 
 export default function Navbar() {
@@ -41,12 +40,12 @@ export default function Navbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500"
+                    src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/landing%20page%2FJeffory.svg?alt=media&token=593e899d-88cd-4b08-8f7c-43305716caba"
                     alt="Your Company"
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500"
+                    src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/landing%20page%2FJeffory.svg?alt=media&token=593e899d-88cd-4b08-8f7c-43305716caba"
                     alt="Your Company"
                   />
                 </div>
