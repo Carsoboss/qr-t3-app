@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { SignUp } from "@clerk/nextjs";
 
 export default function Hero() {
 
@@ -44,6 +44,7 @@ export default function Hero() {
             never lose your items again.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
+            
             <a
               href="#"
               className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
