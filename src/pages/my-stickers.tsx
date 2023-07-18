@@ -94,7 +94,7 @@ export default function MyStickers() {
             ))}
                <div className="flex items-center justify-center">
                  <a href="lost-item" className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Lost Item Page
+                    View My Lost Item Page
                 </a>
             </div>
           </div>

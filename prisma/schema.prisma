@@ -12,25 +12,16 @@ generator client {
 }
 
 model UserTenent {
-  clerkUserId   String    @unique
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  phone         String?
-  phoneVerified DateTime?
-  image         String?
+  clerkUserId   String    @id
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String   @unique
+  Sticker       Sticker[] 
 }
+
 model StickerType {
-  id         String    @id @default(cuid())
-  name       String
-  image      String
-  imageLabel String?
-  size       String?
-  height     String?
-  width      String?
-  storageRef String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  name       String @id
   Sticker    Sticker[]
 }
 
@@ -40,19 +31,20 @@ enum DeviceType {
   WALLET
   PHONE
   OTHER
+  NONE
 }
 
 model Sticker {
   id              String      @id @default(cuid())
-  stickerTypeId   String
-  contactTypeId   String
-  deviceTypeId    String
-  contactValue    String
-  foundMessage    String?
+  userTenentId    String
+  stickerTypeName   String
   otherDeviceType String?
   status          String?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
-  stickerType     StickerType @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  deviceType      DeviceType  @default(WATERBOTTLE)
+  deviceType      DeviceType  @default(NONE)
+  stickerType     StickerType @relation(fields: [stickerTypeName], references: [name], onDelete: Cascade)
+  userTenent      UserTenent  @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
+  @@index([userTenentId])
+  @@index([stickerTypeName])
 }
