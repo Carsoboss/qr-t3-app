@@ -10,6 +10,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "../../utils/classNames";
+import { SignOutButton } from "@clerk/nextjs";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -126,7 +127,7 @@ export default function Navbar() {
                           </a>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
+                      {/* <Menu.Item>
                         {({ active }) => (
                           <a
                             href="#"
@@ -138,18 +139,17 @@ export default function Navbar() {
                             Discord Support
                           </a>
                         )}
-                      </Menu.Item>
+                      </Menu.Item> */}
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <div
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Sign out
-                          </a>
+                            <SignOutButton>Log out</SignOutButton>
+                          </div>
                         )}
                       </Menu.Item>
                     </Menu.Items>

@@ -12,6 +12,16 @@ import {
   CheckBadgeIcon,
 } from "@heroicons/react/20/solid";
 import { api } from "@qrfound/utils/api";
+import {
+  ClerkProvider,
+  RedirectToSignUp,
+  SignedIn,
+  SignedOut,
+  SignIn,
+  SignInButton,
+  SignOutButton,
+  UserButton
+} from "@clerk/nextjs";
 
 const SayHelloWizard = () => {
   const [input, setInput] = React.useState("");
@@ -112,18 +122,32 @@ const Welcome: NextPage = () => {
               and never lose your items again.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
-              >
+              <SignedIn>
+                  <a
+                   href="new-item"
+                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                    >
+                     Get started
+                    </a>
+              </SignedIn>
+              <SignedOut>
+                   <a
+                   href="#"
+                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                   >
                 Get started
-              </a>
-              <a
-                href="#"
+                  </a>
+              </SignedOut>
+              <div
                 className="text-sm font-semibold leading-6 text-gray-900"
               >
-                Log in <span aria-hidden="true">→</span>
-              </a>
+                  <SignedIn>
+                    <SignOutButton aria-hidden="true">Log out →</SignOutButton>
+                  </SignedIn>
+                  <SignedOut>
+                       <SignInButton aria-hidden="true"> Log in →</SignInButton>
+                  </SignedOut>
+              </div>
             </div>
           </div>
           <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
