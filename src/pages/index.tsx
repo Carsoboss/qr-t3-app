@@ -13,14 +13,10 @@ import {
 } from "@heroicons/react/20/solid";
 import { api } from "@qrfound/utils/api";
 import {
-  ClerkProvider,
-  RedirectToSignUp,
   SignedIn,
   SignedOut,
-  SignIn,
   SignInButton,
   SignOutButton,
-  UserButton
 } from "@clerk/nextjs";
 
 const SayHelloWizard = () => {
