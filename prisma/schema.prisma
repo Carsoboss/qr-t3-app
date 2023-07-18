@@ -46,6 +46,16 @@ model DeviceType {
   Sticker Sticker[]
 }
 
+// Todo: Replace models with enums here
+
+// enum DeviceType {
+//   LAPTOP
+//   WATERBOTTLE
+//   WALLET
+//   PHONE
+//   OTHER
+// }
+
 // Main models
 model Sticker {
   id              String      @id @default(cuid())

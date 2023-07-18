@@ -1,6 +1,4 @@
 import React from "react";
-
-import { SignOutButton } from "@clerk/nextjs";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -9,6 +7,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "../../utils/classNames";
+import { SignOutButton } from "@clerk/nextjs";
 
 const navigation = [
   { name: "Home", href: "/", current: false },
@@ -104,7 +103,7 @@ export default function Navbar() {
                           </a>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
+                      {/* <Menu.Item>
                         {({ active }) => (
                           <a
                             href="#"
@@ -116,7 +115,7 @@ export default function Navbar() {
                             Discord Support
                           </a>
                         )}
-                      </Menu.Item>
+                      </Menu.Item> */}
                       <Menu.Item>
                          {({ active }) => (
                             <div

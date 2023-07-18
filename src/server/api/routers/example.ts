@@ -11,11 +11,13 @@ export const exampleRouter = createTRPCRouter({
       };
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    // @ts-expect-error - ctx.prisma is not typed
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    return ctx.prisma.example.findMany();
-  }),
+  helloMutation: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .mutation(({ input }) => {
+      return {
+        greeting: `Hello ${input.text}`,
+      };
+    }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
