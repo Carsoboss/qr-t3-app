@@ -21,7 +21,8 @@ model UserTenent {
 }
 
 model StickerType {
-  name       String @id
+  id         String   @id @default(cuid())
+  name       String   
   Sticker    Sticker[]
 }
 
@@ -35,16 +36,16 @@ enum DeviceType {
 }
 
 model Sticker {
-  id              String      @id @default(cuid())
+  id              String        @id @default(cuid())
   userTenentId    String
-  stickerTypeName   String
+  stickerTypeId   String
   otherDeviceType String?
   status          String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  deviceType      DeviceType  @default(NONE)
-  stickerType     StickerType @relation(fields: [stickerTypeName], references: [name], onDelete: Cascade)
-  userTenent      UserTenent  @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deviceType      DeviceType    @default(NONE)
+  stickerType     StickerType   @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
+  userTenent      UserTenent    @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
   @@index([userTenentId])
-  @@index([stickerTypeName])
+  @@index([stickerTypeId])
 }
