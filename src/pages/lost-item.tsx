@@ -18,7 +18,7 @@ export default function Example() {
               Item Lost
             </h2>
             <img
-              className="mx-auto mt-6 mb-4 h-72 w-auto"
+              className="mx-auto mt-6 mb-4 h-60 w-auto"
               src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/sticker%20type%20images%2FAstronaut_ScanMe_NoOutline.png?alt=media&token=225ee9b9-e4d9-475e-8d00-729c834cd6a6"
               alt="Your Company"
             />

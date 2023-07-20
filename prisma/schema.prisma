@@ -11,113 +11,41 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// model Example {
-//   id        String   @id @default(cuid())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+model UserTenent {
+  clerkUserId   String    @id
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String   @unique
+  Sticker       Sticker[] 
+}
 
-// Schemas
 model StickerType {
-  id         String    @id @default(cuid())
-  name       String
-  image      String
-  imageLabel String?
-  size       String?
-  height     String?
-  width      String?
-  storageRef String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id         String   @id @default(cuid())
+  name       String   
   Sticker    Sticker[]
 }
 
-model ContactType {
-  id      String    @id @default(cuid())
-  name    String
-  label   String
-  Sticker Sticker[]
+enum DeviceType {
+  LAPTOP
+  WATERBOTTLE
+  WALLET
+  PHONE
+  OTHER
+  NONE
 }
 
-model DeviceType {
-  id      String    @id @default(cuid())
-  name    String
-  label   String
-  Sticker Sticker[]
-}
-
-// Todo: Replace models with enums here
-
-// enum DeviceType {
-//   LAPTOP
-//   WATERBOTTLE
-//   WALLET
-//   PHONE
-//   OTHER
-// }
-
-// Main models
 model Sticker {
-  id              String      @id @default(cuid())
+  id              String        @id @default(cuid())
+  userTenentId    String
   stickerTypeId   String
-  contactTypeId   String
-  deviceTypeId    String
-  contactValue    String
-  foundMessage    String?
   otherDeviceType String?
   status          String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  stickerType     StickerType @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  contactType     ContactType @relation(fields: [contactTypeId], references: [id], onDelete: Cascade)
-  deviceType      DeviceType  @relation(fields: [deviceTypeId], references: [id], onDelete: Cascade)
-}
-
-// Necessary for auth (NexAuth)
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? //@db.Text
-  access_token      String? //@db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? //@db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-// @data-to-add account-setup boolean // to track if user has finished setting up thier account
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  phone         String?
-  phoneVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deviceType      DeviceType    @default(NONE)
+  stickerType     StickerType   @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
+  userTenent      UserTenent    @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
+  @@index([userTenentId])
+  @@index([stickerTypeId])
 }

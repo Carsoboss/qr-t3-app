@@ -17,19 +17,23 @@ import {
   SignedOut,
   SignInButton,
   SignOutButton,
+  useUser,
 } from "@clerk/nextjs";
 
 const SayHelloWizard = () => {
+
   const [input, setInput] = React.useState("");
 
   const hello = api.example.helloMutation.useMutation({
     onSuccess: () => {
       setInput("");
       if (hello.data?.greeting) {
-        toast.success(hello.data?.greeting);
+        toast.success(hello.data?.greeting)
+        console.log("success");
       }
       if (!hello.data?.greeting) {
-        toast.success("Hello!");
+        toast.success("Hello!")
+        console.log("success");
       }
     },
     onError: () => {
