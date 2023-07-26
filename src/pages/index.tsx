@@ -21,19 +21,18 @@ import {
 } from "@clerk/nextjs";
 
 const SayHelloWizard = () => {
-
+  const { user } = useUser();
+  console.log(user);
   const [input, setInput] = React.useState("");
 
   const hello = api.example.helloMutation.useMutation({
     onSuccess: () => {
       setInput("");
       if (hello.data?.greeting) {
-        toast.success(hello.data?.greeting)
-        console.log("success");
+        toast.success(hello.data?.greeting);
       }
       if (!hello.data?.greeting) {
-        toast.success("Hello!")
-        console.log("success");
+        toast.success("Hello!");
       }
     },
     onError: () => {

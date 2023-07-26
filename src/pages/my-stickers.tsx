@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useUser } from "@clerk/nextjs";
 
 const products = [
   {
@@ -8,7 +8,6 @@ const products = [
     type: "Laptop",
     email: "f•••@example.com",
     phone: "1•••••••••40",
-    status: "Preparing to ship",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/confirmation-page-03-product-01.jpg",
     imageAlt: "Insulated bottle with white base and black snap lid.",
@@ -19,7 +18,6 @@ const products = [
     type: "Laptop",
     email: "f•••@example.com",
     phone: "1•••••••••40",
-    status: "Preparing to ship",
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/confirmation-page-03-product-01.jpg",
     imageAlt: "Insulated bottle with white base and black snap lid.",
@@ -29,6 +27,9 @@ const products = [
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
+  const { user } = useUser();
+
+  if (!user) return null
 
   return (
     <div className="bg-gray-50">
