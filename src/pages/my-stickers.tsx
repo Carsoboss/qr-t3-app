@@ -74,7 +74,7 @@ export default function MyStickers() {
                             href="#"
                             className="text-sm font-medium text-indigo-500 hover:text-indigo-600 sm:block"
                           >
-                            edit
+                            edit contact info
                           </a>
                         </div>
                         <p className="mt-2 text-sm font-medium text-gray-900">
