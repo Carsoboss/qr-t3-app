@@ -21,7 +21,6 @@
     "@trpc/server": "^10.9.0",
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.22.0",
-    "axios": "^1.4.0",
     "clerk": "^0.8.3",
     "next": "13.4.8",
     "react": "18.2.0",
