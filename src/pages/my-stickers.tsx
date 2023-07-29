@@ -27,9 +27,7 @@ const products = [
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
-  const { user } = useUser();
 
-  if (!user) return null
 
   return (
     <div className="bg-gray-50">
