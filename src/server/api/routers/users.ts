@@ -85,7 +85,7 @@ const create = {
       },
     });
       const existingUser = await prisma.contactInfo.findUnique({
-        where: { clerkUserId: input.clerkUserId },
+        where: { clerkUserId: ctx.userId },
       });
 
       if (existingUser) {
