@@ -1,7 +1,6 @@
 import { createTRPCRouter } from "./trpc";
-import { exampleRouter } from "./routers/example";
-import { userRouter } from "./routers/users";
 import { z } from "zod";
+import { stickerRouter } from "./routers/stickers";
 
 /**
  * This is the primary router for your server.
@@ -9,8 +8,7 @@ import { z } from "zod";
  * All routers added in /api/routers should be manually added here
  */
 export const appRouter = createTRPCRouter({
-  example: exampleRouter,
-  users: userRouter,
+  sticker: stickerRouter,
 });
 
 // export type definition of API
