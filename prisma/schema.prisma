@@ -11,7 +11,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model UserTenent {
+model UserContactInfo {
   clerkUserId String    @id
   firstName   String
   lastName    String
@@ -36,17 +36,17 @@ enum DeviceType {
 }
 
 model Sticker {
-  id              String      @id @default(cuid())
-  userTenentId    String
-  stickerTypeId   String
-  otherDeviceType String?
-  status          String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  deviceType      DeviceType  @default(NONE)
-  stickerType     StickerType @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  userTenent      UserTenent  @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
+  id               String          @id @default(cuid())
+  ownerId          String
+  stickerTypeId    String
+  otherDeviceType  String?
+  status           String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deviceType       DeviceType      @default(NONE)
+  stickerType      StickerType     @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
+  ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [clerkUserId])
 
-  @@index([userTenentId])
+  @@index([ownerId])
   @@index([stickerTypeId])
 }

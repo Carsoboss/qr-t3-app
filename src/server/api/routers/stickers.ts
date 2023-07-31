@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import type { User } from "@clerk/nextjs/server";
 import type { Sticker } from "@prisma/client";
@@ -30,35 +30,47 @@ const addUserDataToStickers = async (stickers: Sticker[]) => {
         message: `Owner of sticker not found: ${sticker.id}, USER ID: ${sticker.ownerId}`,
       });
     }
+
     return {
       sticker,
       owner: {
         ...stickerOwner,
       },
-      // contactInfo,
-      // contacts: {
-      //   ...ContactInfo,
-      // },
     };
   });
 };
 
 export const stickerRouter = createTRPCRouter({
-  getStickersByUserId: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
+  // gets all stickers for the logged in user
+  getStickersByUser: protectedProcedure.query(async ({ ctx }) => {
+    const stickers = await ctx.prisma.sticker
+      .findMany({
+        include: {
+          stickerType: true,
+          ownerContactInfo: true,
+        },
+        where: {
+          ownerId: ctx.userId,
+        },
+        take: 100,
+        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
       })
-    )
-    .query(({ ctx, input }) =>
-      ctx.prisma.sticker
-        .findMany({
-          where: {
-            ownerId: input.userId,
-          },
-          take: 100,
-          orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
-        })
-        .then(addUserDataToStickers)
-    ),
+      .then(addUserDataToStickers);
+
+    return stickers;
+  }),
+  // gets a sticker based on the passed id
+  getStickerById: publicProcedure
+    .input(z.object({ stickerId: z.string() }))
+    .query(({ ctx, input }) => {
+      const sticker = ctx.prisma.sticker.findFirst({
+        include: {
+          ownerContactInfo: true,
+        },
+        where: {
+          id: input.stickerId,
+        },
+      });
+      return sticker;
+    }),
 });

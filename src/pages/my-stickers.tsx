@@ -1,33 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { api } from "@qrfound/utils/api";
+import Image from "next/image";
+import { Clerk } from "@clerk/nextjs/dist/types/server";
 import { useUser } from "@clerk/nextjs";
-
-const products = [
-  {
-    id: 1,
-    name: "Sticker Name",
-    type: "Laptop",
-    email: "f•••@example.com",
-    phone: "1•••••••••40",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/confirmation-page-03-product-01.jpg",
-    imageAlt: "Insulated bottle with white base and black snap lid.",
-  },
-  {
-    id: 2,
-    name: "Sticker Name",
-    type: "Laptop",
-    email: "f•••@example.com",
-    phone: "1•••••••••40",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/confirmation-page-03-product-01.jpg",
-    imageAlt: "Insulated bottle with white base and black snap lid.",
-  },
-  // More products...
-];
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
+  const { data, isLoading: stickersLoading } =
+    api.sticker.getStickersByUser.useQuery();
 
+  if (stickersLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) return <div>Something went wrong</div>;
 
   return (
     <div className="bg-gray-50">
@@ -46,55 +32,74 @@ export default function MyStickers() {
             Products purchased
           </h2>
 
-          <div className="space-y-8">
-            {products.map((product) => (
-              <>
-                <div
-                  key={product.id}
-                  className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
-                >
-                  <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
-                    <div className="sm:flex lg:col-span-7">
-                      <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
-                        <img
-                          src={product.imageSrc}
-                          alt={product.imageAlt}
-                          className="h-full w-full object-cover object-center sm:h-full sm:w-full"
-                        />
-                      </div>
+          {data.length <= 0 && <div>You don&apos;t have any stickers</div>}
 
-                      <div className="mt-6 w-full sm:mt-0 sm:ml-6">
-                        <div className="flex w-full items-center justify-between">
-                          <h3 className="text-base font-medium text-gray-900">
-                            <div>{product.type}</div>
-                          </h3>
-                          <a
-                            href="#"
-                            className="text-sm font-medium text-indigo-500 hover:text-indigo-600 sm:block"
-                          >
-                            edit contact info
-                          </a>
+          <div className="space-y-8">
+            {data.map((data) => {
+              const deviceName = data.sticker.deviceType;
+              const lowercase = deviceName.toLowerCase();
+              const formattedDeviceName =
+                lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
+
+              return (
+                <>
+                  <div
+                    key={`${data.sticker.id}-sticker`}
+                    className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                  >
+                    <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
+                      <div className="sm:flex lg:col-span-7">
+                        <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
+                          <div className="h-full w-full object-cover object-center sm:h-full sm:w-full">
+                            {/* Todo: add this back in when you have an img url for stickers */}
+                            {/* <Image
+                            width={605}
+                            height={500}
+                            src={data.imageSrc}
+                            alt={data.imageAlt}
+                          /> */}
+                          </div>
                         </div>
-                        <p className="mt-2 text-sm font-medium text-gray-900">
-                          {product.name}
+
+                        <div className="mt-6 w-full sm:mt-0 sm:ml-6">
+                          <div className="flex w-full items-center justify-between">
+                            <h3 className="text-base font-medium text-gray-900">
+                              <div>{formattedDeviceName}</div>
+                            </h3>
+                            <a
+                              href="#"
+                              className="text-sm font-medium text-indigo-500 hover:text-indigo-600 sm:block"
+                            >
+                              edit contact info
+                            </a>
+                          </div>
+                          {/* Todo: figure out prisma include */}
+                          {/* <p className="mt-2 text-sm font-medium text-gray-900">
+                          Todo: figure out where
+                          {data.stickerType.name}
+                          {data.owner.id}
                         </p>
                         <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
                         <p className="mt-2 text-sm text-gray-500">
-                          {product.email}
+                          {data.ownerContactInfo.email}
                         </p>
                         <p className="mt-2 text-sm text-gray-500">
-                          {product.phone}
-                        </p>
+                          {data.ownerContactInfo.phone}
+                        </p> */}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            ))}
-               <div className="flex items-center justify-center">
-                 <a href="lost-item" className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    View My Lost Item Page
-                </a>
+                </>
+              );
+            })}
+            <div className="flex items-center justify-center">
+              <a
+                href="lost-item"
+                className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                View My Lost Item Page
+              </a>
             </div>
           </div>
         </section>
