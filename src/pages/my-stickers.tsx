@@ -70,7 +70,7 @@ export default function MyStickers() {
                               href="#"
                               className="text-sm font-medium text-indigo-500 hover:text-indigo-600 sm:block"
                             >
-                              edit contact info
+                              edit
                             </a>
                           </div>
                           {/* Todo: figure out prisma include */}
