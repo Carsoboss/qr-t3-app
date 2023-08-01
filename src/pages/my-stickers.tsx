@@ -3,14 +3,20 @@ import { api } from "@qrfound/utils/api";
 import Image from "next/image";
 import { Clerk } from "@clerk/nextjs/dist/types/server";
 import { useUser } from "@clerk/nextjs";
+import { LoadingPage } from "@qrfound/components/navigation/loading";
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
   const { data, isLoading: stickersLoading } =
     api.sticker.getStickersByUser.useQuery();
-
+  const user = useUser;
+  console.log(user);
   if (stickersLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
   }
 
   if (!data) return <div>Something went wrong</div>;
@@ -67,8 +73,8 @@ export default function MyStickers() {
                               <div>{formattedDeviceName}</div>
                             </h3>
                             <a
-                              href="#"
-                              className="text-sm font-medium text-indigo-500 hover:text-indigo-600 sm:block"
+                              href="edit"
+                              className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
                               edit
                             </a>

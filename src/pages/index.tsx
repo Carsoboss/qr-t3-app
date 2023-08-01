@@ -77,35 +77,33 @@ const Welcome: NextPage = () => {
               Welcome to QRfound
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              QRfound allows you to add your information to a QR code sticker
-              so you will never lose your items again.
+              QRfound allows you to add your information to a QR code sticker so
+              you will never lose your items again.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <SignedIn>
-                  <a
-                   href="new-item"
-                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
-                    >
-                     Get started
-                    </a>
+                <a
+                  href="new-item"
+                  className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                >
+                  Get started
+                </a>
               </SignedIn>
               <SignedOut>
-                   <a
-                   href="#"
-                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
-                   >
-                Get started
-                  </a>
+                <a
+                  href="#"
+                  className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                >
+                  Get started
+                </a>
               </SignedOut>
-              <div
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                  <SignedIn>
-                    <SignOutButton aria-hidden="true">Log out →</SignOutButton>
-                  </SignedIn>
-                  <SignedOut>
-                       <SignInButton aria-hidden="true"> Log in →</SignInButton>
-                  </SignedOut>
+              <div className="text-sm font-semibold leading-6 text-gray-900">
+                <SignedIn>
+                  <SignOutButton aria-hidden="true">Log out →</SignOutButton>
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton aria-hidden="true"> Log in →</SignInButton>
+                </SignedOut>
               </div>
             </div>
           </div>
@@ -164,7 +162,7 @@ const Welcome: NextPage = () => {
                   // src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
                   src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/landing%20page%2FiPhone%2012%20-%20Scan%20(1).png?alt=media&token=d465c765-5381-4df9-ab0f-e971a9280604"
                   alt="Product screenshot"
-                  className="relative -z-20 min-w-full max-w-xl max-h-96 lg:max-h-[56rem] object-contain rounded-xl ring-white/10 lg:row-span-4 w-auto lg:max-w-none"
+                  className="relative -z-20 max-h-96 w-auto min-w-full max-w-xl rounded-xl object-contain ring-white/10 lg:row-span-4 lg:max-h-[56rem] lg:max-w-none"
                   width={2432}
                   height={1442}
                 />
