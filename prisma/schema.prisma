@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -11,19 +11,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model UserTenent {
-  clerkUserId   String    @id
-  firstName     String
-  lastName      String
-  email         String   @unique
-  phone         String   @unique
-  Sticker       Sticker[] 
+model UserContactInfo {
+  clerkUserId String    @id
+  firstName   String
+  lastName    String
+  email       String    @unique
+  phone       String    @unique
+  Sticker     Sticker[]
 }
 
 model StickerType {
-  id         String   @id @default(cuid())
-  name       String   
-  Sticker    Sticker[]
+  id      String    @id @default(cuid())
+  name    String
+  Sticker Sticker[]
 }
 
 enum DeviceType {
@@ -36,16 +36,17 @@ enum DeviceType {
 }
 
 model Sticker {
-  id              String        @id @default(cuid())
-  userTenentId    String
-  stickerTypeId   String
-  otherDeviceType String?
-  status          String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  deviceType      DeviceType    @default(NONE)
-  stickerType     StickerType   @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  userTenent      UserTenent    @relation(fields: [userTenentId], references: [clerkUserId], onDelete: Cascade)
-  @@index([userTenentId])
+  id               String          @id @default(cuid())
+  ownerId          String
+  stickerTypeId    String
+  otherDeviceType  String?
+  status           String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deviceType       DeviceType      @default(NONE)
+  stickerType      StickerType     @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
+  ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [clerkUserId])
+
+  @@index([ownerId])
   @@index([stickerTypeId])
 }

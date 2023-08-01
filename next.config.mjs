@@ -21,5 +21,8 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["tailwindui.com", "firebasestorage.googleapis.com"]
+  }
 };
 export default config;
