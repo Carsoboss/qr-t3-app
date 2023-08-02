@@ -83,7 +83,7 @@ const Welcome: NextPage = () => {
             <div className="mt-10 flex items-center gap-x-6">
               <SignedIn>
                 <a
-                  href="new-item"
+                  href="get-started"
                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
                 >
                   Get started
@@ -91,7 +91,7 @@ const Welcome: NextPage = () => {
               </SignedIn>
               <SignedOut>
                 <a
-                  href="#"
+                  href="get-started"
                   className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
                 >
                   Get started
