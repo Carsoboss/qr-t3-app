@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import type { User } from "@clerk/nextjs/server";
-import type { Sticker } from "@prisma/client";
+import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 const filterUserForClient = (user: User) => {
@@ -59,6 +59,25 @@ export const stickerRouter = createTRPCRouter({
 
     return stickers;
   }),
+  updateDeviceType: protectedProcedure
+    .input(
+      z.object({
+        stickerId: z.string(),
+        newDeviceType: z.nativeEnum(DeviceType),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedSticker = await ctx.prisma.sticker.update({
+        where: {
+          id: input.stickerId,
+        },
+        data: {
+          deviceType: input.newDeviceType,
+        },
+      });
+
+      return updatedSticker;
+    }),
   // gets a sticker based on the passed id
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))

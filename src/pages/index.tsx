@@ -99,10 +99,10 @@ const Welcome: NextPage = () => {
               </SignedOut>
               <div className="text-sm font-semibold leading-6 text-gray-900">
                 <SignedIn>
-                  <SignOutButton aria-hidden="true">Log out →</SignOutButton>
+                  <SignOutButton aria-hidden="true">Sign out →</SignOutButton>
                 </SignedIn>
                 <SignedOut>
-                  <SignInButton aria-hidden="true"> Log in →</SignInButton>
+                  <SignInButton aria-hidden="true"> Sign in →</SignInButton>
                 </SignedOut>
               </div>
             </div>

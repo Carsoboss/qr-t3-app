@@ -4,9 +4,11 @@ import Image from "next/image";
 import { Clerk } from "@clerk/nextjs/dist/types/server";
 import { useUser } from "@clerk/nextjs";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
+import { Prisma } from "@prisma/client";
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
+
   const { data, isLoading: stickersLoading } =
     api.sticker.getStickersByUser.useQuery();
 
@@ -17,7 +19,6 @@ export default function MyStickers() {
       </div>
     );
   }
-
   if (!data) return <div>Something went wrong</div>;
 
   return (
@@ -72,25 +73,22 @@ export default function MyStickers() {
                               <div>{formattedDeviceName}</div>
                             </h3>
                             <a
-                              href="edit-contact"
+                              href="update-item"
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
-                              edit
+                              edit item
                             </a>
                           </div>
-                          {/* Todo: figure out prisma include */}
-                          {/* <p className="mt-2 text-sm font-medium text-gray-900">
-                          Todo: figure out where
-                          {data.stickerType.name}
-                          {data.owner.id}
-                        </p>
-                        <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
-                        <p className="mt-2 text-sm text-gray-500">
-                          {data.ownerContactInfo.email}
-                        </p>
-                        <p className="mt-2 text-sm text-gray-500">
-                          {data.ownerContactInfo.phone}
-                        </p> */}
+                          <p className="mt-2 text-sm font-medium text-gray-900">
+                            {data.sticker.stickerType.name}
+                          </p>
+                          <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
+                          <p className="mt-2 text-sm text-gray-500">
+                            {data.sticker.ownerContactInfo.email}
+                          </p>
+                          <p className="mt-2 text-sm text-gray-500">
+                            {data.sticker.ownerContactInfo.phone}
+                          </p>
                         </div>
                       </div>
                     </div>

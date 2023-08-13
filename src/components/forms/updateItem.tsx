@@ -1,21 +1,36 @@
 import { useState, useEffect } from "react";
+import { api } from "@qrfound/utils/api";
+import { LoadingPage } from "@qrfound/components/navigation/loading";
+import { toast } from "react-hot-toast";
 
-const product = {
-  name: "Everyday Ruck Snack",
-  href: "#",
-  imageSrc:
-    "https://tailwindui.com/img/ecommerce-images/product-page-04-featured-product-shot.jpg",
-  imageAlt:
-    "Light green canvas bag with black straps, handle, front zipper pouch, and drawstring top.",
-};
-
-const NewItemForm = () => {
-  const [itemType, setItemType] = useState("Water Bottle");
+const UpdateItemForm = () => {
+  const [itemType, setItemType] = useState(null);
   const [showOther, setShowOther] = useState(false);
+  const { data, isLoading: stickersLoading } =
+    api.sticker.getStickersByUser.useQuery();
+
+  const mutation = api.sticker.updateDeviceType.useMutation({
+    onSuccess: () => {
+      toast.success("Device type successfully updated!");
+    },
+    onError: () => {
+      toast.error("An error occurred while updating device type.");
+    },
+  });
+
+  useEffect(() => {
+    if (!stickersLoading && data && data.length > 0) {
+      setItemType(data[0]?.sticker.deviceType);
+    }
+  }, [data, stickersLoading]);
 
   useEffect(() => {
     setShowOther(itemType === "Other");
   }, [itemType]);
+
+  if (stickersLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="bg-gray-50">
@@ -25,8 +40,8 @@ const NewItemForm = () => {
             <div className="lg:col-start-1 lg:row-span-2 lg:self-center">
               <div className="aspect-w-1 aspect-h-1 max-h-72 overflow-hidden rounded-lg lg:max-h-[none]">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src="https://tailwindui.com/img/ecommerce-images/product-page-04-featured-product-shot.jpg"
+                  alt="Light green canvas bag with black straps, handle, front zipper pouch, and drawstring top."
                   className="h-full max-h-72 w-full object-contain object-center lg:max-h-[none]"
                 />
               </div>
@@ -35,7 +50,7 @@ const NewItemForm = () => {
             <div className="lg:max-w-lg lg:self-end">
               <div className="mt-4">
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  New Item
+                  Update Item
                 </h1>
               </div>
 
@@ -92,6 +107,15 @@ const NewItemForm = () => {
                   <button
                     type="submit"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-violet-500 py-2.5 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Assuming the sticker ID is in data[0].sticker.id
+                      // This is just a placeholder, adjust according to your actual sticker ID structure
+                      mutation.mutate({
+                        stickerId: data[0].sticker.id,
+                        newDeviceType: itemType,
+                      });
+                    }}
                   >
                     Submit
                   </button>
@@ -105,4 +129,4 @@ const NewItemForm = () => {
   );
 };
 
-export default NewItemForm;
+export default UpdateItemForm;
