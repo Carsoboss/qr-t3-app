@@ -31,7 +31,7 @@ export default function MyStickers() {
             </h1>
           </div>
         </div>
-        <div className="flex items-center justify-between py-8 px-5">
+        <div className="flex items-center justify-end space-x-4 py-3 px-5">
           <a
             href="lost-item"
             className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
