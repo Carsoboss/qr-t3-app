@@ -5,6 +5,7 @@ import { Clerk } from "@clerk/nextjs/dist/types/server";
 import { useUser } from "@clerk/nextjs";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { Prisma } from "@prisma/client";
+import Link from "next/link";
 
 export default function MyStickers() {
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
@@ -85,12 +86,14 @@ export default function MyStickers() {
                       <div className="sm:flex lg:col-span-7">
                         <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
                           <div className="h-full w-full object-cover object-center sm:h-full sm:w-full">
-                            <Image
-                              width={605}
-                              height={500}
-                              src={data.stickerType.url}
-                              alt={data.stickerType.name}
-                            />
+                            <Link href={`/${data.id}`}>
+                              <Image
+                                width={605}
+                                height={500}
+                                src={data.stickerType.url}
+                                alt={data.stickerType.name}
+                              />
+                            </Link>
                           </div>
                         </div>
 
@@ -103,19 +106,21 @@ export default function MyStickers() {
                               href="update-item"
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
-                              edit item name
+                              edit item
                             </a>
                           </div>
                           <p className="mt-2 text-sm font-medium text-gray-900">
                             {data.stickerType.name}
                           </p>
                           <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
-                          <p className="mt-2 text-sm text-gray-500">
-                            {data.ownerContactInfo.email}
-                          </p>
-                          <p className="mt-2 text-sm text-gray-500">
-                            {formattedPhoneNumber}
-                          </p>
+                          <Link href="edit-contact">
+                            <p className="mt-2 text-sm text-gray-500">
+                              {data.ownerContactInfo.email}
+                            </p>
+                            <p className="mt-2 text-sm text-gray-500">
+                              {formattedPhoneNumber}
+                            </p>
+                          </Link>
                         </div>
                       </div>
                     </div>
