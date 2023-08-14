@@ -21,6 +21,18 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
   const lower = firstName.toLowerCase();
   const formattedfirstName = lower.charAt(0).toUpperCase() + lower.slice(1);
 
+  const rawPhoneNumber = data.ownerContactInfo.phone.replace(/\D/g, ""); // Remove all non-digits
+
+  let formattedPhoneNumber = rawPhoneNumber;
+
+  if (rawPhoneNumber.length === 10) {
+    // Check if it's a valid 10-digit number
+    const areaCode = rawPhoneNumber.slice(0, 3);
+    const centralOfficeCode = rawPhoneNumber.slice(3, 6);
+    const lineNumber = rawPhoneNumber.slice(6);
+    formattedPhoneNumber = `(${areaCode}) ${centralOfficeCode}-${lineNumber}`;
+  }
+
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-4 px-4 sm:px-6 lg:px-8">
@@ -35,10 +47,13 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
               alt={data.stickerType.name}
             />
             <p className="mt-2 text-center text-sm text-gray-800">
-              You found {formattedfirstName}&apos;s lost {formattedDeviceName}
+              this {formattedDeviceName} has been lost.
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
-              Send a message to let them know you found it!{" "}
+              Please contact me.
+            </p>
+            <p className="mt-2 text-center text-sm text-gray-800">
+              {formattedPhoneNumber}
             </p>
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST">
@@ -46,7 +61,7 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
 
             <div className="flex flex-col space-y-4">
               <a
-                href={`mailto:${data.ownerContactInfo.email}?subject=Lost Item&body=Hey I found your lost ${data.deviceType}!`}
+                href={`mailto:${data.ownerContactInfo.email}?subject=Lost Item&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
@@ -56,7 +71,7 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
                 </button>
               </a>
               <a
-                href={`sms:${data.ownerContactInfo.phone}?body=Hey I found your lost ${data.deviceType}!`}
+                href={`sms:${data.ownerContactInfo.phone}?&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
