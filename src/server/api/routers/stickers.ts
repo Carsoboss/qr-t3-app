@@ -43,19 +43,17 @@ const addUserDataToStickers = async (stickers: Sticker[]) => {
 export const stickerRouter = createTRPCRouter({
   // gets all stickers for the logged in user
   getStickersByUser: protectedProcedure.query(async ({ ctx }) => {
-    const stickers = await ctx.prisma.sticker
-      .findMany({
-        include: {
-          stickerType: true,
-          ownerContactInfo: true,
-        },
-        where: {
-          ownerId: ctx.userId,
-        },
-        take: 100,
-        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
-      })
-      .then(addUserDataToStickers);
+    const stickers = ctx.prisma.sticker.findMany({
+      include: {
+        stickerType: true,
+        ownerContactInfo: true,
+      },
+      where: {
+        ownerId: ctx.userId,
+      },
+      take: 100,
+      orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
+    });
 
     return stickers;
   }),
@@ -85,6 +83,7 @@ export const stickerRouter = createTRPCRouter({
       const sticker = ctx.prisma.sticker.findFirst({
         include: {
           ownerContactInfo: true,
+          stickerType: true,
         },
         where: {
           id: input.stickerId,

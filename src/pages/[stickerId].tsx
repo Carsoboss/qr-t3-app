@@ -31,38 +31,48 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
             </h2>
             <img
               className="mx-auto mt-6 mb-4 h-60 w-auto"
-              src="https://firebasestorage.googleapis.com/v0/b/qr-found.appspot.com/o/sticker%20type%20images%2FAstronaut_ScanMe_NoOutline.png?alt=media&token=225ee9b9-e4d9-475e-8d00-729c834cd6a6"
-              alt="Your Company"
+              src={data.stickerType.url}
+              alt={data.stickerType.name}
             />
             <p className="mt-2 text-center text-sm text-gray-800">
               You found {formattedfirstName}&apos;s lost {formattedDeviceName}
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
-              Send a message to let them know you found it!
+              Send a message to let them know you found it!{" "}
             </p>
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
 
             <div className="flex flex-col space-y-4">
-              <button
-                type="submit"
-                className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+              <a
+                href={`mailto:${data.ownerContactInfo.email}?subject=Lost Item&body=Hey I found your lost ${data.deviceType}!`}
               >
-                Email
-              </button>
-              <button
-                type="submit"
-                className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                <button
+                  type="button"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                >
+                  Email
+                </button>
+              </a>
+              <a
+                href={`sms:${data.ownerContactInfo.phone}?body=Hey I found your lost ${data.deviceType}!`}
               >
-                Text
-              </button>
-              <button
-                type="submit"
-                className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
-              >
-                Call
-              </button>
+                <button
+                  type="button"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                >
+                  Text
+                </button>
+              </a>
+              <a href={`tel:${data.ownerContactInfo.phone}`}>
+                <button
+                  type="button"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                >
+                  Call
+                </button>
+              </a>
             </div>
           </form>
         </div>

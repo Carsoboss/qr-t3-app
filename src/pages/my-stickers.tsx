@@ -42,7 +42,7 @@ export default function MyStickers() {
 
           <div className="space-y-8">
             {data.map((data) => {
-              const deviceName = data.sticker.deviceType;
+              const deviceName = data.deviceType;
               const lowercase = deviceName.toLowerCase();
               const formattedDeviceName =
                 lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
@@ -50,7 +50,7 @@ export default function MyStickers() {
               return (
                 <>
                   <div
-                    key={`${data.sticker.id}-sticker`}
+                    key={`${data.id}-sticker`}
                     className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
                   >
                     <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
@@ -80,14 +80,14 @@ export default function MyStickers() {
                             </a>
                           </div>
                           <p className="mt-2 text-sm font-medium text-gray-900">
-                            {data.sticker.stickerType.name}
+                            {data.stickerType.name}
                           </p>
                           <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
                           <p className="mt-2 text-sm text-gray-500">
-                            {data.sticker.ownerContactInfo.email}
+                            {data.ownerContactInfo.email}
                           </p>
                           <p className="mt-2 text-sm text-gray-500">
-                            {data.sticker.ownerContactInfo.phone}
+                            {data.ownerContactInfo.phone}
                           </p>
                         </div>
                       </div>
