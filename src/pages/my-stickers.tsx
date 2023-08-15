@@ -86,7 +86,7 @@ export default function MyStickers() {
                       <div className="sm:flex lg:col-span-7">
                         <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
                           <div className="h-full w-full object-cover object-center sm:h-full sm:w-full">
-                            <Link href={`/${data.id}`}>
+                            <Link href={`/${data.id}/lost-item`}>
                               <Image
                                 width={605}
                                 height={500}
@@ -103,7 +103,7 @@ export default function MyStickers() {
                               <div>{formattedDeviceName}</div>
                             </h3>
                             <a
-                              href="update-item"
+                              href={`/${data.id}/update-item`}
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
                               edit item

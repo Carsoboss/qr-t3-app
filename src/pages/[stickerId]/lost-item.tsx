@@ -26,7 +26,6 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
   let formattedPhoneNumber = rawPhoneNumber;
 
   if (rawPhoneNumber.length === 10) {
-    // Check if it's a valid 10-digit number
     const areaCode = rawPhoneNumber.slice(0, 3);
     const centralOfficeCode = rawPhoneNumber.slice(3, 6);
     const lineNumber = rawPhoneNumber.slice(6);
@@ -47,7 +46,7 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
               alt={data.stickerType.name}
             />
             <p className="mt-2 text-center text-sm text-gray-800">
-              this {formattedDeviceName} has been lost.
+              This {formattedDeviceName} has been lost.
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
               Please contact me.
