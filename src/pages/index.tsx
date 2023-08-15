@@ -2,7 +2,6 @@
 import { type NextPage } from "next";
 import React from "react";
 import Head from "next/head";
-import { toast } from "react-hot-toast";
 import {
   CursorArrowRaysIcon,
   ViewfinderCircleIcon,
@@ -11,13 +10,11 @@ import {
   AdjustmentsHorizontalIcon,
   CheckBadgeIcon,
 } from "@heroicons/react/20/solid";
-import { api } from "@qrfound/utils/api";
 import {
   SignedIn,
   SignedOut,
   SignInButton,
   SignOutButton,
-  useUser,
 } from "@clerk/nextjs";
 
 const Welcome: NextPage = () => {
