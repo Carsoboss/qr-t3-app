@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import type { User } from "@clerk/nextjs/server";
-import type { Sticker } from "@prisma/client";
+import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 const filterUserForClient = (user: User) => {
@@ -43,22 +43,39 @@ const addUserDataToStickers = async (stickers: Sticker[]) => {
 export const stickerRouter = createTRPCRouter({
   // gets all stickers for the logged in user
   getStickersByUser: protectedProcedure.query(async ({ ctx }) => {
-    const stickers = await ctx.prisma.sticker
-      .findMany({
-        include: {
-          stickerType: true,
-          ownerContactInfo: true,
-        },
-        where: {
-          ownerId: ctx.userId,
-        },
-        take: 100,
-        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
-      })
-      .then(addUserDataToStickers);
+    const stickers = ctx.prisma.sticker.findMany({
+      include: {
+        stickerType: true,
+        ownerContactInfo: true,
+      },
+      where: {
+        ownerId: ctx.userId,
+      },
+      take: 100,
+      orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
+    });
 
     return stickers;
   }),
+  updateDeviceType: protectedProcedure
+    .input(
+      z.object({
+        stickerId: z.string(),
+        newDeviceType: z.nativeEnum(DeviceType),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const updatedSticker = await ctx.prisma.sticker.update({
+        where: {
+          id: input.stickerId,
+        },
+        data: {
+          deviceType: input.newDeviceType,
+        },
+      });
+
+      return updatedSticker;
+    }),
   // gets a sticker based on the passed id
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
@@ -66,6 +83,7 @@ export const stickerRouter = createTRPCRouter({
       const sticker = ctx.prisma.sticker.findFirst({
         include: {
           ownerContactInfo: true,
+          stickerType: true,
         },
         where: {
           id: input.stickerId,

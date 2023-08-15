@@ -23,6 +23,7 @@ model UserContactInfo {
 model StickerType {
   id      String    @id @default(cuid())
   name    String
+  url     String
   Sticker Sticker[]
 }
 
@@ -32,7 +33,7 @@ enum DeviceType {
   WALLET
   PHONE
   OTHER
-  NONE
+  ITEM
 }
 
 model Sticker {
@@ -43,7 +44,7 @@ model Sticker {
   status           String?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
-  deviceType       DeviceType      @default(NONE)
+  deviceType       DeviceType      @default(ITEM)
   stickerType      StickerType     @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
   ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [clerkUserId])
 

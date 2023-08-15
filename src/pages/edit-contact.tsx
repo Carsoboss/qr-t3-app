@@ -1,6 +1,51 @@
+import { LoadingPage } from "@qrfound/components/navigation/loading";
+import { api } from "@qrfound/utils/api";
 import * as React from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
-const EditContactForm = () => {
+export default function EditContact() {
+  const { data, isLoading: stickersLoading } =
+    api.users.getContactInfo.useQuery();
+  const mutation = api.users.updateContactInfo.useMutation({
+    onSuccess: () => {
+      toast.success("Contact info successfully updated!");
+    },
+    onError: () => {
+      toast.error("An error occurred while updating contact info.");
+    },
+  });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    if (!stickersLoading && data) {
+      setFirstName(data.firstName);
+      setLastName(data.lastName);
+      setEmail(data.email);
+      setPhone(data.phone);
+    }
+  }, [data, stickersLoading]);
+
+  const resetContactInfo = () => {
+    if (!stickersLoading && data) {
+      setFirstName(data?.firstName);
+      setLastName(data?.lastName);
+      setEmail(data?.email);
+      setPhone(data?.phone);
+    }
+  };
+
+  if (stickersLoading) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
@@ -26,7 +71,9 @@ const EditContactForm = () => {
                       name="first-name"
                       id="first-name"
                       autoComplete="given-name"
-                      className="block w-full rounded-md pl-3 pr-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -43,8 +90,10 @@ const EditContactForm = () => {
                       type="text"
                       name="last-name"
                       id="last-name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       autoComplete="family-name"
-                      className="block w-full rounded-md pl-3 pr-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -62,7 +111,9 @@ const EditContactForm = () => {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      className="block w-full rounded-md pl-3 pr-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -80,7 +131,9 @@ const EditContactForm = () => {
                       name="phone"
                       type="phone"
                       autoComplete="phone"
-                      className="block w-full rounded-md pl-3 pr-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -91,13 +144,18 @@ const EditContactForm = () => {
             <div className="flex justify-end">
               <button
                 type="button"
+                onClick={resetContactInfo}
                 className="rounded-md bg-white py-2 px-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="ml-3 inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={(e) => {
+                  e.preventDefault();
+                  mutation.mutate({ firstName, lastName, email, phone });
+                }}
+                className="ml-3 inline-flex justify-center rounded-md bg-violet-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
               >
                 Save
               </button>
@@ -107,6 +165,4 @@ const EditContactForm = () => {
       </div>
     </div>
   );
-};
-
-export default EditContactForm;
+}
