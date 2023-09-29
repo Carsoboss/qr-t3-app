@@ -1,5 +1,4 @@
 import { createTRPCRouter } from "./trpc";
-import { z } from "zod";
 import { stickerRouter } from "./routers/stickers";
 import { userRouter } from "./routers/users";
 

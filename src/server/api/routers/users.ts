@@ -13,18 +13,6 @@ export const userRouter = createTRPCRouter({
   addContactInfo: protectedProcedure
     .input(
       z.object({
-        firstName: z
-          .string()
-          .min(1, {
-            message: "First name must be at least 1 character",
-          })
-          .max(35, { message: "First name cannot be more than 35 characters" }),
-        lastName: z
-          .string()
-          .min(1, {
-            message: "Last name must be at least 1 character",
-          })
-          .max(35, { message: "Last name cannot be more than 35 characters" }),
         email: z.string().email({ message: "Please add a valid email" }),
         phone: z
           .string()
@@ -33,14 +21,10 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const clerkUserId = ctx.userId;
-      // const { success } = await ratelimit.limit(clerkUserId);
-      // if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+      const userId = ctx.userId;
       const contactInfo = await ctx.prisma.userContactInfo.create({
         data: {
-          clerkUserId,
-          firstName: input.firstName,
-          lastName: input.lastName,
+          userId,
           email: input.email,
           phone: input.phone,
         },
@@ -50,18 +34,6 @@ export const userRouter = createTRPCRouter({
   updateContactInfo: protectedProcedure
     .input(
       z.object({
-        firstName: z
-          .string()
-          .min(1, {
-            message: "First name must be at least 1 character",
-          })
-          .max(35, { message: "First name cannot be more than 35 characters" }),
-        lastName: z
-          .string()
-          .min(1, {
-            message: "Last name must be at least 1 character",
-          })
-          .max(35, { message: "Last name cannot be more than 35 characters" }),
         email: z.string().email({ message: "Please add a valid email" }),
         phone: z
           .string()
@@ -72,10 +44,8 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const clerkUserId = ctx.userId;
       const contactInfo = await ctx.prisma.userContactInfo.update({
-        where: { clerkUserId: clerkUserId },
+        where: { userId: clerkUserId },
         data: {
-          firstName: input.firstName,
-          lastName: input.lastName,
           email: input.email,
           phone: input.phone,
         },
@@ -85,7 +55,7 @@ export const userRouter = createTRPCRouter({
 
   getContactInfo: protectedProcedure.query(async ({ ctx }) => {
     const contactInfo = await ctx.prisma.userContactInfo.findUnique({
-      where: { clerkUserId: ctx.userId },
+      where: { userId: ctx.userId },
     });
     if (!contactInfo) throw new TRPCError({ code: "NOT_FOUND" });
     return contactInfo;

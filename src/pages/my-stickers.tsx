@@ -1,10 +1,7 @@
 import React from "react";
 import { api } from "@qrfound/utils/api";
 import Image from "next/image";
-import { Clerk } from "@clerk/nextjs/dist/types/server";
-import { useUser } from "@clerk/nextjs";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
 export default function MyStickers() {
@@ -20,6 +17,7 @@ export default function MyStickers() {
       </div>
     );
   }
+  console.log(data);
   if (!data) return <div>Something went wrong</div>;
 
   return (
@@ -33,14 +31,14 @@ export default function MyStickers() {
           </div>
         </div>
         <div className="flex items-center justify-end space-x-4 py-3 px-5">
-          <a
-            href="lost-item"
+          {/* <a
+            href="http://shop.qrfound.cool"
             className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Buy a sticker
-          </a>
+          </a> */}
           <a
-            href="lost-item"
+            href=""
             className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Scan a sticker
@@ -86,7 +84,7 @@ export default function MyStickers() {
                       <div className="sm:flex lg:col-span-7">
                         <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
                           <div className="h-full w-full object-cover object-center sm:h-full sm:w-full">
-                            <Link href={`/${data.id}/lost-item`}>
+                            <Link href={`sticker/${data.id}`}>
                               <Image
                                 width={605}
                                 height={500}
@@ -103,7 +101,7 @@ export default function MyStickers() {
                               <div>{formattedDeviceName}</div>
                             </h3>
                             <a
-                              href={`/${data.id}/update-item`}
+                              href={`update-item`}
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
                               edit item
