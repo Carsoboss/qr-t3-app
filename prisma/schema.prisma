@@ -1,5 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider     = "mysql"
@@ -7,17 +8,12 @@ datasource db {
   relationMode = "prisma"
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model UserContactInfo {
-  clerkUserId String    @id
-  firstName   String
-  lastName    String
-  email       String    @unique
-  phone       String    @unique
-  Sticker     Sticker[]
+  id      String    @id @default(cuid())
+  userId  String    @unique
+  email   String    @unique
+  phone   String    @unique
+  Sticker Sticker[]
 }
 
 model StickerType {
@@ -25,15 +21,6 @@ model StickerType {
   name    String
   url     String
   Sticker Sticker[]
-}
-
-enum DeviceType {
-  LAPTOP
-  WATERBOTTLE
-  WALLET
-  PHONE
-  OTHER
-  ITEM
 }
 
 model Sticker {
@@ -46,8 +33,17 @@ model Sticker {
   updatedAt        DateTime        @updatedAt
   deviceType       DeviceType      @default(ITEM)
   stickerType      StickerType     @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [clerkUserId])
+  ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [id])
 
   @@index([ownerId])
   @@index([stickerTypeId])
+}
+
+enum DeviceType {
+  LAPTOP
+  WATERBOTTLE
+  WALLET
+  PHONE
+  OTHER
+  ITEM
 }

@@ -3,13 +3,12 @@ import { useRouter } from "next/router";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { api } from "@qrfound/utils/api";
 
-const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
-  const { data, isLoading } = api.sticker.getStickerById.useQuery({
+const StickerDetails = ({ stickerId }: { stickerId: string }) => {
+  const { data, isLoading, error } = api.sticker.getStickerById.useQuery({
     stickerId,
   });
-
   if (isLoading) return <LoadingPage />;
-
+  if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Sticker not found</div>;
 
   const deviceName = data.deviceType;
@@ -17,11 +16,7 @@ const StickerDetails: NextPage<{ stickerId: string }> = ({ stickerId }) => {
   const formattedDeviceName =
     lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
 
-  const firstName = data.ownerContactInfo.firstName;
-  const lower = firstName.toLowerCase();
-  const formattedfirstName = lower.charAt(0).toUpperCase() + lower.slice(1);
-
-  const rawPhoneNumber = data.ownerContactInfo.phone.replace(/\D/g, ""); // Remove all non-digits
+  const rawPhoneNumber = data.ownerContactInfo.phone.replace(/\D/g, "");
 
   let formattedPhoneNumber = rawPhoneNumber;
 
@@ -99,8 +94,7 @@ const StickerPage: NextPage = () => {
   const router = useRouter();
   const { stickerId } = router.query;
 
-  if (!stickerId) return <LoadingPage />; // Show a loading state while waiting for stickerId
-
+  if (!stickerId) return <LoadingPage />;
   return <StickerDetails stickerId={stickerId.toString()} />;
 };
 

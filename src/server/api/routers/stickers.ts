@@ -41,9 +41,8 @@ const addUserDataToStickers = async (stickers: Sticker[]) => {
 };
 
 export const stickerRouter = createTRPCRouter({
-  // gets all stickers for the logged in user
   getStickersByUser: protectedProcedure.query(async ({ ctx }) => {
-    const stickers = ctx.prisma.sticker.findMany({
+    const stickers = await ctx.prisma.sticker.findMany({
       include: {
         stickerType: true,
         ownerContactInfo: true,
@@ -79,8 +78,8 @@ export const stickerRouter = createTRPCRouter({
   // gets a sticker based on the passed id
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
-    .query(({ ctx, input }) => {
-      const sticker = ctx.prisma.sticker.findFirst({
+    .query(async ({ ctx, input }) => {
+      const sticker = await ctx.prisma.sticker.findFirst({
         include: {
           ownerContactInfo: true,
           stickerType: true,
@@ -89,6 +88,14 @@ export const stickerRouter = createTRPCRouter({
           id: input.stickerId,
         },
       });
+
+      if (!sticker) {
+        throw new TRPCError({
+          message: "Could not retrieve the sticker",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+
       return sticker;
     }),
 });
