@@ -3,8 +3,19 @@ import { api } from "@qrfound/utils/api";
 import Image from "next/image";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 export default function MyStickers() {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
   // add a message saying sticker added above the confirmation component. Users can now contact you by scanning your sticker. Put your sticker on your <device type> and scan it so others can contact you.
 
   const { data, isLoading: stickersLoading } =
@@ -17,7 +28,7 @@ export default function MyStickers() {
       </div>
     );
   }
-  console.log(data);
+  console.log(data?.length);
   if (!data) return <div>Something went wrong</div>;
 
   return (
@@ -60,20 +71,6 @@ export default function MyStickers() {
               const formattedDeviceName =
                 lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
 
-              const rawPhoneNumber = data.ownerContactInfo.phone.replace(
-                /\D/g,
-                ""
-              );
-
-              let formattedPhoneNumber = rawPhoneNumber;
-
-              if (rawPhoneNumber.length === 10) {
-                const areaCode = rawPhoneNumber.slice(0, 3);
-                const centralOfficeCode = rawPhoneNumber.slice(3, 6);
-                const lineNumber = rawPhoneNumber.slice(6);
-                formattedPhoneNumber = `(${areaCode}) ${centralOfficeCode}-${lineNumber}`;
-              }
-
               return (
                 <>
                   <div
@@ -113,10 +110,10 @@ export default function MyStickers() {
                           <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
                           <Link href="edit-contact">
                             <p className="mt-2 text-sm text-gray-500">
-                              {data.ownerContactInfo.email}
+                              {user?.primaryEmailAddress?.toString()}
                             </p>
                             <p className="mt-2 text-sm text-gray-500">
-                              {formattedPhoneNumber}
+                              {user?.primaryPhoneNumber?.toString()}
                             </p>
                           </Link>
                         </div>

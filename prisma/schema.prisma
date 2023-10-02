@@ -8,14 +8,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model UserContactInfo {
-  id      String    @id @default(cuid())
-  userId  String    @unique
-  email   String    @unique
-  phone   String    @unique
-  Sticker Sticker[]
-}
-
 model StickerType {
   id      String    @id @default(cuid())
   name    String
@@ -24,18 +16,17 @@ model StickerType {
 }
 
 model Sticker {
-  id               String          @id @default(cuid())
-  ownerId          String
-  stickerTypeId    String
-  otherDeviceType  String?
-  status           String?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  deviceType       DeviceType      @default(ITEM)
-  stickerType      StickerType     @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
-  ownerContactInfo UserContactInfo @relation(fields: [ownerId], references: [id])
+  id              String      @id @default(cuid())
+  userId          String      @unique
+  stickerTypeId   String
+  otherDeviceType String?
+  status          String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  deviceType      DeviceType  @default(ITEM)
+  stickerType     StickerType @relation(fields: [stickerTypeId], references: [id], onDelete: Cascade)
 
-  @@index([ownerId])
+  @@index([userId])
   @@index([stickerTypeId])
 }
 

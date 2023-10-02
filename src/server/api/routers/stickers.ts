@@ -5,50 +5,45 @@ import type { User } from "@clerk/nextjs/server";
 import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
+// posting a new sticker use this func
 const filterUserForClient = (user: User) => {
   return {
     id: user.id,
   };
 };
 
-const addUserDataToStickers = async (stickers: Sticker[]) => {
-  const userId = stickers.map((sticker) => sticker.ownerId);
-  const users = (
-    await clerkClient.users.getUserList({
-      userId: userId,
-      limit: 1,
-    })
-  ).map(filterUserForClient);
+const addUserDataToSticker = async (sticker: Sticker | null) => {
+  if (!sticker) {
+    console.error("STICKER NOT FOUND", sticker);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Sticker is missing from function addUserDataToSticker()",
+    });
+  }
 
-  return stickers.map((sticker) => {
-    const stickerOwner = users.find((user) => user.id === sticker.ownerId);
+  const userId = sticker.userId;
 
-    if (!stickerOwner) {
-      console.error("AUTHOR NOT FOUND", sticker);
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: `Owner of sticker not found: ${sticker.id}, USER ID: ${sticker.ownerId}`,
-      });
-    }
+  const stickerOwner = await clerkClient.users.getUser(userId);
 
-    return {
-      sticker,
-      owner: {
-        ...stickerOwner,
-      },
-    };
-  });
+  if (!stickerOwner) {
+    console.error("AUTHOR NOT FOUND", sticker);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `Owner of sticker not found: ${sticker.id}, USER ID: ${sticker.userId}`,
+    });
+  }
+
+  return { sticker, owner: stickerOwner };
 };
 
 export const stickerRouter = createTRPCRouter({
   getStickersByUser: protectedProcedure.query(async ({ ctx }) => {
     const stickers = await ctx.prisma.sticker.findMany({
+      where: {
+        userId: ctx.userId,
+      },
       include: {
         stickerType: true,
-        ownerContactInfo: true,
-      },
-      where: {
-        ownerId: ctx.userId,
       },
       take: 100,
       orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
@@ -56,6 +51,7 @@ export const stickerRouter = createTRPCRouter({
 
     return stickers;
   }),
+
   updateDeviceType: protectedProcedure
     .input(
       z.object({
@@ -79,15 +75,16 @@ export const stickerRouter = createTRPCRouter({
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const sticker = await ctx.prisma.sticker.findFirst({
-        include: {
-          ownerContactInfo: true,
-          stickerType: true,
-        },
-        where: {
-          id: input.stickerId,
-        },
-      });
+      const sticker = await ctx.prisma.sticker
+        .findFirst({
+          include: {
+            stickerType: true,
+          },
+          where: {
+            id: input.stickerId,
+          },
+        })
+        .then(addUserDataToSticker);
 
       if (!sticker) {
         throw new TRPCError({
