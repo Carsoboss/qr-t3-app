@@ -6,11 +6,11 @@ import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 // posting a new sticker use this func
-const filterUserForClient = (user: User) => {
-  return {
-    id: user.id,
-  };
-};
+// const filterUserForClient = (user: User) => {
+//   return {
+//     id: user.id,
+//   };
+// };
 
 const addUserDataToSticker = async (sticker: Sticker | null) => {
   if (!sticker) {
@@ -32,7 +32,6 @@ const addUserDataToSticker = async (sticker: Sticker | null) => {
       message: `Owner of sticker not found: ${sticker.id}, USER ID: ${sticker.userId}`,
     });
   }
-
   return { sticker, owner: stickerOwner };
 };
 
