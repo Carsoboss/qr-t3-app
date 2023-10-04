@@ -26,7 +26,6 @@ export default StickerPage;
 
 const StickerDetails = ({
   stickerId,
-  user,
 }: {
   stickerId: string;
   user: unknown;
@@ -46,14 +45,14 @@ const StickerDetails = ({
   console.log(data.owner);
   return (
     <>
-      <div className="flex min-h-full items-center justify-center py-4 px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-3">
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               {formattedDeviceName} Lost
             </h2>
             <img
-              className="mx-auto mt-6 mb-4 h-60 w-auto"
+              className="mx-auto mb-4 mt-6 h-60 w-auto"
               src={data.sticker.stickerType.url}
               alt={data.sticker.stickerType.name}
             />
@@ -64,41 +63,46 @@ const StickerDetails = ({
               Please contact me.
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
-              {/* {data.owner.primaryPhoneNumber.toString() ?? */}
-              {/* // "Email not available"} */}
+              {data.owner.emailAddresses[0]?.emailAddress.toString() ??
+                "Email not available"}
             </p>
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="flex flex-col space-y-4">
               <a
-              // href={`mailto:${data.owner.primaryEmailAddress?.toString()}?subject=Lost Item&body=Hey I found your lost ${formattedDeviceName}!`}
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                href={`mailto:${data.owner.emailAddresses[0]?.emailAddress.toString()}?subject=Lost Item&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
                 >
                   Email
                 </button>
               </a>
               <a
-              // href={`sms:${data.owner.primaryEmailAddress?.toString()}?&body=Hey I found your lost ${formattedDeviceName}!`}
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                href={`sms:${data.owner.phoneNumbers[0]?.phoneNumber.toString()}?&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
                 >
                   Text
                 </button>
               </a>
-              {/* <a href={`tel:${data.owner.primaryPhoneNumber?.toString()}`}>
+              <a
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                href={`tel:${data.owner.phoneNumbers[0]?.phoneNumber.toString()}`}
+              >
                 <button
                   type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-violet-500 py-3 px-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
+                  className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500"
                 >
                   Call
                 </button>
-              </a> */}
+              </a>
             </div>
           </form>
         </div>

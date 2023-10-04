@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
-import type { User } from "@clerk/nextjs/server";
 import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
