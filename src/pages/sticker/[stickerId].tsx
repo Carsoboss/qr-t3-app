@@ -3,17 +3,14 @@ import { useRouter } from "next/router";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { api } from "@qrfound/utils/api";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 
 const StickerPage: NextPage = () => {
   const router = useRouter();
   const { user, isLoaded } = useUser();
 
   if (!isLoaded) {
-    return (
-      <div>
-        <LoadingPage />
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   const { stickerId } = router.query;
@@ -51,11 +48,16 @@ const StickerDetails = ({
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               {formattedDeviceName} Lost
             </h2>
-            <img
-              className="mx-auto mb-4 mt-6 h-60 w-auto"
-              src={data.sticker.stickerType.url}
-              alt={data.sticker.stickerType.name}
-            />
+            <div className="relative mx-auto mb-4 mt-6 h-60 w-full">
+              <Image
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                src={data.stickerType.url}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                alt={data.stickerType.name}
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
             <p className="mt-2 text-center text-sm text-gray-800">
               This {formattedDeviceName} has been lost.
             </p>

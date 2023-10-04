@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { clerkClient } from "@clerk/nextjs/server";
 import { DeviceType, type Sticker } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { prisma } from "@qrfound/server/db";
 
 // posting a new sticker use this func
 // const filterUserForClient = (user: User) => {
@@ -22,8 +23,8 @@ const addUserDataToSticker = async (sticker: Sticker | null) => {
 
   const userId = sticker.userId;
 
+  // Fetch the sticker owner
   const stickerOwner = await clerkClient.users.getUser(userId);
-
   if (!stickerOwner) {
     console.error("AUTHOR NOT FOUND", sticker);
     throw new TRPCError({
@@ -31,7 +32,21 @@ const addUserDataToSticker = async (sticker: Sticker | null) => {
       message: `Owner of sticker not found: ${sticker.id}, USER ID: ${sticker.userId}`,
     });
   }
-  return { sticker, owner: stickerOwner };
+
+  // Fetch the sticker type
+  const typeofSticker = await prisma.stickerType.findUnique({
+    where: { id: sticker.stickerTypeId },
+  });
+
+  if (!typeofSticker) {
+    console.error("STICKER TYPE NOT FOUND", sticker);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `Type of sticker not found for sticker ID: ${sticker.id}`,
+    });
+  }
+
+  return { sticker, owner: stickerOwner, stickerType: typeofSticker };
 };
 
 export const stickerRouter = createTRPCRouter({
