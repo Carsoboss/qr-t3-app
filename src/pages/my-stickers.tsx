@@ -33,7 +33,7 @@ export default function MyStickers() {
 
   return (
     <div className="bg-gray-50">
-      <main className="mx-auto max-w-2xl pt-8 pb-24 sm:px-6 sm:pt-16 lg:max-w-7xl lg:px-8">
+      <main className="mx-auto max-w-2xl pb-24 pt-8 sm:px-6 sm:pt-16 lg:max-w-7xl lg:px-8">
         <div className="space-y-2 px-4 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 sm:px-0">
           <div className="flex w-full items-center justify-between sm:items-baseline sm:space-x-4">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
@@ -41,7 +41,7 @@ export default function MyStickers() {
             </h1>
           </div>
         </div>
-        <div className="flex items-center justify-end space-x-4 py-3 px-5">
+        <div className="flex items-center justify-end space-x-4 px-5 py-3">
           {/* <a
             href="http://shop.qrfound.cool"
             className="rounded-md bg-violet-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -75,9 +75,9 @@ export default function MyStickers() {
                 <>
                   <div
                     key={`${data.id}-sticker`}
-                    className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                    className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
                   >
-                    <div className="py-6 px-4 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
+                    <div className="px-4 py-6 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
                       <div className="sm:flex lg:col-span-7">
                         <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
                           <div className="h-full w-full object-cover object-center sm:h-full sm:w-full">
@@ -92,7 +92,7 @@ export default function MyStickers() {
                           </div>
                         </div>
 
-                        <div className="mt-6 w-full sm:mt-0 sm:ml-6">
+                        <div className="mt-6 w-full sm:ml-6 sm:mt-0">
                           <div className="flex w-full items-center justify-between">
                             <h3 className="text-base font-medium text-gray-900">
                               <div>{formattedDeviceName}</div>
@@ -101,7 +101,7 @@ export default function MyStickers() {
                               href={`update-item`}
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
-                              edit item
+                              edit
                             </a>
                           </div>
                           <p className="mt-2 text-sm font-medium text-gray-900">
