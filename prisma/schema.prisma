@@ -17,7 +17,7 @@ model StickerType {
 
 model Sticker {
   id              String      @id @default(cuid())
-  userId          String      @unique
+  userId          String
   stickerTypeId   String
   otherDeviceType String?
   status          String?
