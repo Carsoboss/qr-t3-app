@@ -23,7 +23,16 @@ const addUserDataToSticker = async (sticker: Sticker | null) => {
 
   const userId = sticker.userId;
 
+  if (!userId) {
+    console.error("Invalid userId:", userId);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Invalid userId provided to addUserDataToSticker()",
+    });
+  }
+
   // Fetch the sticker owner
+
   const stickerOwner = await clerkClient.users.getUser(userId);
   if (!stickerOwner) {
     console.error("AUTHOR NOT FOUND", sticker);
@@ -88,24 +97,52 @@ export const stickerRouter = createTRPCRouter({
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const sticker = await ctx.prisma.sticker
-        .findFirst({
-          include: {
-            stickerType: true,
-          },
-          where: {
-            id: input.stickerId,
-          },
-        })
-        .then(addUserDataToSticker);
+      const sticker = await ctx.prisma.sticker.findFirst({
+        include: {
+          stickerType: true,
+        },
+        where: {
+          id: input.stickerId,
+        },
+      });
 
       if (!sticker) {
+        console.error(
+          "Sticker not found in database for sticker ID:",
+          input.stickerId
+        );
         throw new TRPCError({
-          message: "Could not retrieve the sticker",
+          message: "Sticker not found in the database",
+          code: "NOT_FOUND",
+        });
+      }
+
+      // If the sticker doesn't have a userId and the user is not authenticated.
+      if (!sticker.userId && !ctx.userId) {
+        throw new TRPCError({
+          message: "Authentication required",
+          code: "UNAUTHORIZED", // This is a custom error code your front-end can check.
+        });
+      }
+
+      // If the sticker doesn't have a userId, assign the current user to it.
+      if (!sticker.userId && ctx.userId) {
+        await ctx.prisma.sticker.update({
+          where: { id: sticker.id },
+          data: { userId: ctx.userId },
+        });
+        sticker.userId = ctx.userId; // Update the sticker object to include the new userId for the next steps
+      }
+      const result = await addUserDataToSticker(sticker);
+
+      // Check if result contains an error and throw a TRPCError if it does
+      if ("error" in result) {
+        console.error(result.error); // Log the error for debugging
+        throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
       }
 
-      return sticker;
+      return result;
     }),
 });

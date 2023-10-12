@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { api } from "@qrfound/utils/api";
-import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { SignInButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
-const StickerPage: NextPage = () => {
+const StickerPage = () => {
   const router = useRouter();
   const { user, isLoaded } = useUser();
 
@@ -21,17 +21,47 @@ const StickerPage: NextPage = () => {
 
 export default StickerPage;
 
-const StickerDetails = ({
-  stickerId,
-}: {
+type StickerDetailsProps = {
   stickerId: string;
   user: unknown;
-}) => {
+};
+
+const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId, user }) => {
   const { data, isLoading, error } = api.sticker.getStickerById.useQuery({
     stickerId,
   });
 
   if (isLoading) return <LoadingPage />;
+
+  if (error && error.data && error.data.code === "UNAUTHORIZED") {
+    return (
+      <>
+        <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md space-y-3">
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+              Lost Item Page
+            </h2>
+            {data && (
+              <div className="relative mx-auto mb-4 mt-6 h-60 w-full">
+                <Image
+                  src={data.stickerType.url}
+                  alt={data.stickerType.name}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+            )}
+            <div className="text-center">
+              Sign in to register this sticker
+              <br></br>
+              <SignInButton />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Sticker not found</div>;
 
@@ -39,7 +69,6 @@ const StickerDetails = ({
   const lowercase = deviceName.toLowerCase();
   const formattedDeviceName =
     lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
-  console.log(data.owner);
   return (
     <>
       <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
@@ -50,9 +79,7 @@ const StickerDetails = ({
             </h2>
             <div className="relative mx-auto mb-4 mt-6 h-60 w-full">
               <Image
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 src={data.stickerType.url}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 alt={data.stickerType.name}
                 layout="fill"
                 objectFit="contain"
@@ -65,7 +92,7 @@ const StickerDetails = ({
               Please contact me.
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
-              {data.owner.emailAddresses[0]?.emailAddress.toString() ??
+              {data.owner.emailAddresses[0]?.emailAddress.toString() ||
                 "Email not available"}
             </p>
           </div>
