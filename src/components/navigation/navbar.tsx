@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
