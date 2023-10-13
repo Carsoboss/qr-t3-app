@@ -121,7 +121,7 @@ export const stickerRouter = createTRPCRouter({
       if (!sticker.userId && !ctx.userId) {
         throw new TRPCError({
           message: "Authentication required",
-          code: "UNAUTHORIZED", // This is a custom error code your front-end can check.
+          code: "UNAUTHORIZED",
         });
       }
 
@@ -131,13 +131,13 @@ export const stickerRouter = createTRPCRouter({
           where: { id: sticker.id },
           data: { userId: ctx.userId },
         });
-        sticker.userId = ctx.userId; // Update the sticker object to include the new userId for the next steps
+        sticker.userId = ctx.userId;
       }
       const result = await addUserDataToSticker(sticker);
 
       // Check if result contains an error and throw a TRPCError if it does
       if ("error" in result) {
-        console.error(result.error); // Log the error for debugging
+        console.error(result.error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
