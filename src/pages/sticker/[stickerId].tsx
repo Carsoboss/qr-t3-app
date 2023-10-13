@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { api } from "@qrfound/utils/api";
 import Image from "next/image";
-import { SignInButton } from "@clerk/nextjs";
+import { SignUpButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 
 const StickerPage = () => {
   const router = useRouter();
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
 
   if (!isLoaded) {
     return <LoadingPage />;
@@ -16,45 +16,46 @@ const StickerPage = () => {
   const { stickerId } = router.query;
 
   if (!stickerId) return <LoadingPage />;
-  return <StickerDetails stickerId={stickerId.toString()} user={user} />;
+  return <StickerDetails stickerId={stickerId.toString()} />;
 };
 
 export default StickerPage;
 
 type StickerDetailsProps = {
   stickerId: string;
-  user: unknown;
 };
 
-const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId, user }) => {
-  const { data, isLoading, error } = api.sticker.getStickerById.useQuery({
-    stickerId,
-  });
+const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
+  const { data, isLoading, error } = api.sticker.getStickerById.useQuery(
+    {
+      stickerId,
+    },
+    {
+      retry: 1,
+    }
+  );
 
   if (isLoading) return <LoadingPage />;
 
   if (error && error.data && error.data.code === "UNAUTHORIZED") {
     return (
       <>
-        <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
-          <div className="w-full max-w-md space-y-3">
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Lost Item Page
+        <div className="flex min-h-full items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+          <div className="w-full max-w-md space-y-8">
+            <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
+              Sign in or Create Your Account
             </h2>
-            {data && (
-              <div className="relative mx-auto mb-4 mt-6 h-60 w-full">
-                <Image
-                  src={data.stickerType.url}
-                  alt={data.stickerType.name}
-                  layout="fill"
-                  objectFit="contain"
-                />
-              </div>
-            )}
-            <div className="text-center">
-              Sign in to register this sticker
-              <br></br>
-              <SignInButton />
+            <p className="text-center text-gray-600">
+              To register this sticker sign in or create an account
+            </p>
+            <div style={{ marginTop: "170px" }}>
+              <button
+                type="button"
+                className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              >
+                <SignUpButton />
+              </button>
+              <div style={{ marginTop: "80px" }}></div>
             </div>
           </div>
         </div>
@@ -69,6 +70,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId, user }) => {
   const lowercase = deviceName.toLowerCase();
   const formattedDeviceName =
     lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
+  console.log(data.owner.emailAddresses);
   return (
     <>
       <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">

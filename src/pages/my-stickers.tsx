@@ -96,12 +96,12 @@ export default function MyStickers() {
                             <h3 className="text-base font-medium text-gray-900">
                               <div>{formattedDeviceName}</div>
                             </h3>
-                            <a
+                            {/* <a
                               href={`update-item`}
                               className="text-sm font-medium text-violet-500 hover:text-violet-600 sm:block"
                             >
                               edit
-                            </a>
+                            </a> */}
                           </div>
                           <p className="mt-2 text-sm font-medium text-gray-900">
                             {data.stickerType.name}

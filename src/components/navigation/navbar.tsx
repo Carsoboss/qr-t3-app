@@ -1,11 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  XMarkIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import React from "react";
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "../../utils/classNames";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
@@ -68,7 +64,25 @@ export default function Navbar() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <SignedIn>
-                  <UserButton />
+                  <UserButton
+                  // appearance={{
+                  //   elements: {
+                  //     // Main card element
+                  //     navbar: "hidden",
+                  //     navbarMobileMenuButton: "hidden",
+
+                  //     // Header elements
+                  //     header: "hidden",
+                  //     headerTitle: "hidden",
+                  //     headerSubtitle: "hidden",
+                  //     pageScrollBox: "p-5",
+                  //     navbarMobileMenuRow: "hidden",
+
+                  //     // Hidden sections
+                  //     profileSection__danger: "hidden",
+                  //   },
+                  // }}
+                  />
                 </SignedIn>
                 <div className="text-gray-300 hover:bg-gray-700 hover:text-white">
                   <SignedOut>
