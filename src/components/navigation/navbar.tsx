@@ -9,6 +9,11 @@ const navigation = [
   { name: "Home", href: "/", current: false },
   { name: "My Stickers", href: "/my-stickers", current: false },
   { name: "Shop", href: "http://shop.qrfound.cool", current: false },
+  {
+    name: "Support",
+    href: "mailto:carson.karren@gmail.com?subject=QRfound Support&body=I need assistance",
+    current: false,
+  },
 ];
 
 export default function Navbar() {

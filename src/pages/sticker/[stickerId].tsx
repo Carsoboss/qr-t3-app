@@ -4,6 +4,7 @@ import { api } from "@qrfound/utils/api";
 import Image from "next/image";
 import { SignUpButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
+import { EmailAddress, PhoneNumber } from "@clerk/nextjs/dist/types/server";
 
 const StickerPage = () => {
   const router = useRouter();
@@ -70,6 +71,12 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
   const formattedDeviceName =
     lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
   console.log(data.owner.emailAddresses);
+  const primaryPhone = data.owner.phoneNumbers.find(
+    (PhoneNumber) => PhoneNumber.id === data.owner.primaryPhoneNumberId
+  );
+  const primaryEmail = data.owner.emailAddresses.find(
+    (EmailAddress) => EmailAddress.id === data.owner.primaryEmailAddressId
+  );
   return (
     <>
       <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
@@ -93,8 +100,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
               Please contact me.
             </p>
             <p className="mt-2 text-center text-sm text-gray-800">
-              {data.owner.emailAddresses[0]?.emailAddress.toString() ||
-                "Email not available"}
+              {primaryEmail?.emailAddress.toString() || "Email not available"}
             </p>
           </div>
           <form className="mt-8 space-y-6" action="#" method="POST">
@@ -102,7 +108,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
             <div className="flex flex-col space-y-4">
               <a
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                href={`mailto:${data.owner.emailAddresses[0]?.emailAddress.toString()}?subject=Lost Item&body=Hey I found your lost ${formattedDeviceName}!`}
+                href={`mailto:${primaryEmail?.emailAddress.toString()}?subject=Lost Item&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
@@ -113,7 +119,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
               </a>
               <a
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                href={`sms:${data.owner.phoneNumbers[0]?.phoneNumber.toString()}?&body=Hey I found your lost ${formattedDeviceName}!`}
+                href={`sms:${primaryPhone?.phoneNumber.toString()}?&body=Hey I found your lost ${formattedDeviceName}!`}
               >
                 <button
                   type="button"
@@ -124,7 +130,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
               </a>
               <a
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                href={`tel:${data.owner.phoneNumbers[0]?.phoneNumber.toString()}`}
+                href={`tel:${primaryPhone?.phoneNumber.toString()}`}
               >
                 <button
                   type="button"
