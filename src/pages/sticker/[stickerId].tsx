@@ -4,7 +4,8 @@ import { api } from "@qrfound/utils/api";
 import Image from "next/image";
 import { SignUpButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
-import { EmailAddress, PhoneNumber } from "@clerk/nextjs/dist/types/server";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 const StickerPage = () => {
   const router = useRouter();
@@ -35,6 +36,16 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
       retry: 1,
     }
   );
+  const [hasShownToast, setHasShownToast] = useState(false);
+
+  useEffect(() => {
+    if (data?.wasUserDataAdded && !hasShownToast) {
+      toast.success("Sticker registration successful", {
+        position: "bottom-center",
+      });
+      setHasShownToast(true);
+    }
+  }, [data?.wasUserDataAdded, hasShownToast]);
 
   if (isLoading) return <LoadingPage />;
 
