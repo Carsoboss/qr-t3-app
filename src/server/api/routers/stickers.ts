@@ -94,6 +94,7 @@ export const stickerRouter = createTRPCRouter({
       return updatedSticker;
     }),
   // gets a sticker based on the passed id
+  // gets a sticker based on the passed id
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -117,6 +118,8 @@ export const stickerRouter = createTRPCRouter({
         });
       }
 
+      let wasUserDataAdded = false; // Initialize flag to false
+
       // If the sticker doesn't have a userId and the user is not authenticated.
       if (!sticker.userId && !ctx.userId) {
         throw new TRPCError({
@@ -132,7 +135,9 @@ export const stickerRouter = createTRPCRouter({
           data: { userId: ctx.userId },
         });
         sticker.userId = ctx.userId;
+        wasUserDataAdded = true; // Set flag to true as user data was added for the first time
       }
+
       const result = await addUserDataToSticker(sticker);
 
       // Check if result contains an error and throw a TRPCError if it does
@@ -143,6 +148,9 @@ export const stickerRouter = createTRPCRouter({
         });
       }
 
-      return result;
+      return {
+        ...result,
+        wasUserDataAdded, // Include the flag in the response
+      };
     }),
 });
