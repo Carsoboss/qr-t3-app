@@ -40,7 +40,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
 
   useEffect(() => {
     if (data?.wasUserDataAdded && !hasShownToast) {
-      toast.success("Sticker registration successful", {
+      toast.success("Sticker added", {
         position: "bottom-center",
       });
       setHasShownToast(true);
