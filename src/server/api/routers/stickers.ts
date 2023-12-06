@@ -94,7 +94,6 @@ export const stickerRouter = createTRPCRouter({
       return updatedSticker;
     }),
   // gets a sticker based on the passed id
-  // gets a sticker based on the passed id
   getStickerById: publicProcedure
     .input(z.object({ stickerId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -150,7 +149,40 @@ export const stickerRouter = createTRPCRouter({
 
       return {
         ...result,
-        wasUserDataAdded, // Include the flag in the response
+        wasUserDataAdded,
       };
+    }),
+  // In your stickerRouter
+
+  removeUserFromSticker: protectedProcedure
+    .input(z.object({ stickerId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // Ensure that the sticker is associated with the current user
+      const stickerToUpdate = await ctx.prisma.sticker.findFirst({
+        where: {
+          id: input.stickerId,
+          userId: ctx.userId,
+        },
+      });
+
+      if (!stickerToUpdate) {
+        throw new TRPCError({
+          message:
+            "Sticker not found or user does not have permission to modify",
+          code: "NOT_FOUND",
+        });
+      }
+
+      // Update the sticker by setting its userId to an empty string
+      await ctx.prisma.sticker.update({
+        where: {
+          id: input.stickerId,
+        },
+        data: {
+          userId: "",
+        },
+      });
+
+      return { success: true, message: "Sticker updated successfully" };
     }),
 });
