@@ -173,13 +173,14 @@ export const stickerRouter = createTRPCRouter({
         });
       }
 
-      // Update the sticker by setting its userId to an empty string
+      // Update the sticker by setting its userId to an empty string and deviceType to ITEM
       await ctx.prisma.sticker.update({
         where: {
           id: input.stickerId,
         },
         data: {
           userId: "",
+          deviceType: "ITEM", // Update the deviceType to ITEM
         },
       });
 
