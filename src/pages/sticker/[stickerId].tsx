@@ -63,7 +63,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
             <SignUpButton>
               <div style={{ marginTop: "170px" }}>
                 <div className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
-                  Sign Up
+                  Register sticker
                 </div>
                 <div style={{ marginTop: "80px" }}></div>
               </div>
@@ -81,7 +81,6 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
   const lowercase = deviceName.toLowerCase();
   const formattedDeviceName =
     lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
-  console.log(data.owner.emailAddresses);
   const primaryPhone = data.owner.phoneNumbers.find(
     (PhoneNumber) => PhoneNumber.id === data.owner.primaryPhoneNumberId
   );
