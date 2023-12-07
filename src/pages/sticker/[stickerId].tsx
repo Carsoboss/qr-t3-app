@@ -61,7 +61,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
               Sign in or create an account to activate your sticker.
             </p>
             <SignUpButton>
-              <div style={{ marginTop: "170px" }}>
+              <div style={{ marginTop: "200px" }}>
                 <div className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
                   Activate sticker
                 </div>
