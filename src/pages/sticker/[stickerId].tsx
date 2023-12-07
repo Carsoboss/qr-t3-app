@@ -55,15 +55,15 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
         <div className="flex min-h-full items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
           <div className="w-full max-w-md space-y-8">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-              Sign in or Create Your Account
+              Activate Your Sticker
             </h2>
             <p className="text-center text-gray-600">
-              To register this sticker sign in or create an account
+              Sign in or create an account to activate your sticker.
             </p>
             <SignUpButton>
               <div style={{ marginTop: "170px" }}>
                 <div className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
-                  Register sticker
+                  Activate sticker
                 </div>
                 <div style={{ marginTop: "80px" }}></div>
               </div>
