@@ -39,7 +39,6 @@ export default function MyStickers() {
         .then(() => {
           toast.success("Sticker removed successfully");
           setOpen(false);
-          // Using void to explicitly ignore the returned value
           void ctx.sticker.getStickersByUser.invalidate();
         })
         .catch((error) => {

@@ -9,11 +9,11 @@ const navigation = [
   { name: "Home", href: "/", current: false },
   { name: "My Stickers", href: "/my-stickers", current: false },
   { name: "Shop", href: "http://shop.qrfound.cool", current: false },
-  {
-    name: "Support",
-    href: "mailto:carson.karren@gmail.com?subject=QRfound Support&body=I need assistance",
-    current: false,
-  },
+  // {
+  //   name: "Support",
+  //   href: "mailto:carson.karren@gmail.com?subject=QRfound Support&body=I need assistance",
+  //   current: false,
+  // },
 ];
 
 export default function Navbar() {
@@ -69,25 +69,7 @@ export default function Navbar() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <SignedIn>
-                  <UserButton
-                  // appearance={{
-                  //   elements: {
-                  //     // Main card element
-                  //     navbar: "hidden",
-                  //     navbarMobileMenuButton: "hidden",
-
-                  //     // Header elements
-                  //     header: "hidden",
-                  //     headerTitle: "hidden",
-                  //     headerSubtitle: "hidden",
-                  //     pageScrollBox: "p-5",
-                  //     navbarMobileMenuRow: "hidden",
-
-                  //     // Hidden sections
-                  //     profileSection__danger: "hidden",
-                  //   },
-                  // }}
-                  />
+                  <UserButton />
                 </SignedIn>
                 <div className="text-gray-300 hover:bg-gray-700 hover:text-white">
                   <SignedOut>
