@@ -51,26 +51,59 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
 
   if (error && error.data && error.data.code === "UNAUTHORIZED") {
     return (
-      <>
-        <div className="flex min-h-full items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-          <div className="w-full max-w-md space-y-8">
-            <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-              Activate Your Sticker
-            </h2>
-            <p className="text-center text-gray-600">
-              Sign in or create an account to activate your sticker.
-            </p>
-            <SignUpButton>
-              <div style={{ marginTop: "200px" }}>
-                <div className="inline-flex w-full justify-center rounded-md bg-violet-500 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
+      <div className="flex min-h-screen flex-col items-center justify-start px-4 pt-24 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+          {/* Key icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="mx-auto h-16 w-16 text-purple-400" // Size increased from h-12 w-12 to h-16 w-16
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+            />
+          </svg>
+
+          <h2 className="mt-4 pt-2 text-center text-3xl font-bold tracking-tight text-gray-900">
+            Activate your Sticker
+          </h2>
+
+          <p className="pt-6 text-center text-gray-600">
+            Sign in or create an <br className="sm:hidden" />
+            account to activate your sticker.
+          </p>
+
+          <SignUpButton>
+            <div className="mt-8 flex w-full justify-center">
+              <div className="rounded-md bg-violet-500 px-4 py-2 shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
+                {/* Sparkles icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="mr-2 inline h-6 w-6 text-white"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                  />
+                </svg>
+                <span className="pt-4 font-semibold text-white">
                   Activate sticker
-                </div>
-                <div style={{ marginTop: "80px" }}></div>
+                </span>
               </div>
-            </SignUpButton>
-          </div>
+            </div>
+          </SignUpButton>
         </div>
-      </>
+      </div>
     );
   }
 
