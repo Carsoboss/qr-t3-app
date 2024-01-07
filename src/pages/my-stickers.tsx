@@ -68,6 +68,7 @@ export default function MyStickers() {
   }
 
   if (!data) return <div>Something went wrong</div>;
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? "";
 
   const formatPhoneNumber = (phoneNumber: string): string => {
     const cleaned = phoneNumber.replace(/[^\d+]/g, "");
@@ -187,6 +188,7 @@ export default function MyStickers() {
                     </Transition>
                   </Menu>
                 </div>
+                <p className="mt-1 text-sm text-gray-500">{userEmail}</p>
                 <p className="mt-1 text-sm text-gray-500">
                   {formattedPhoneNumber}
                 </p>
