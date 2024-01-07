@@ -60,7 +60,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="mx-auto h-16 w-16 text-purple-400" // Size increased from h-12 w-12 to h-16 w-16
+            className="mx-auto h-16 w-16 text-purple-400"
           >
             <path
               strokeLinecap="round"
@@ -107,8 +107,28 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
     );
   }
 
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>Sticker not found</div>;
+  if (error) {
+    return (
+      <div
+        className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+        role="alert"
+      >
+        <strong className="font-bold">Error:</strong>
+        <span className="block sm:inline">{error.message}</span>
+      </div>
+    );
+  }
+  if (!data) {
+    return (
+      <div
+        className="border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700"
+        role="alert"
+      >
+        <p className="font-bold">Notice</p>
+        <p>Sticker not found.</p>
+      </div>
+    );
+  }
 
   const deviceName = data.sticker.deviceType;
   const lowercase = deviceName.toLowerCase();
@@ -134,6 +154,9 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
                 alt={data.stickerType.name}
                 layout="fill"
                 objectFit="contain"
+                // width={448}
+                // height={224}
+                priority
               />
             </div>
             <p className="mt-2 text-center text-sm text-gray-800">
