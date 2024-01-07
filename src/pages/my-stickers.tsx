@@ -30,21 +30,32 @@ export default function MyStickers() {
     setOpen(true);
   };
 
-  const handleConfirmRemoveSticker = async () => {
-    if (selectedStickerId) {
-      await removeUserFromStickerMutation
-        .mutateAsync({
-          stickerId: selectedStickerId,
-        })
-        .then(() => {
-          toast.success("Sticker removed successfully");
-          setOpen(false);
-          void ctx.sticker.getStickersByUser.invalidate();
-        })
-        .catch((error) => {
-          console.error("Error removing sticker:", error);
-          toast.error("Failed to remove sticker");
-        });
+  const [removingStickerId, setRemovingStickerId] = useState<string | null>(
+    null
+  );
+
+  const handleConfirmRemoveSticker = () => {
+    if (selectedStickerId && removingStickerId === null) {
+      setOpen(false);
+      setRemovingStickerId(selectedStickerId);
+    }
+  };
+
+  const onTransitionEnd = async (
+    event: React.TransitionEvent,
+    stickerId: string
+  ) => {
+    if (event.propertyName === "opacity" && stickerId === removingStickerId) {
+      try {
+        await removeUserFromStickerMutation.mutateAsync({ stickerId });
+        toast.success("Sticker removed successfully");
+      } catch (error) {
+        console.error("Error removing sticker:", error);
+        toast.error("Failed to remove sticker");
+      } finally {
+        setRemovingStickerId(null); // Reset removing state
+        void ctx.sticker.getStickersByUser.invalidate(); // Refresh the list
+      }
     }
   };
 
@@ -57,6 +68,7 @@ export default function MyStickers() {
   }
 
   if (!data) return <div>Something went wrong</div>;
+  const userEmail = user?.primaryEmailAddress?.emailAddress ?? "";
 
   const formatPhoneNumber = (phoneNumber: string): string => {
     const cleaned = phoneNumber.replace(/[^\d+]/g, "");
@@ -83,154 +95,108 @@ export default function MyStickers() {
   };
 
   return (
-    <div className="bg-gray-50">
-      <main className="mx-auto max-w-2xl pb-24 pt-8 sm:px-6 sm:pt-16 lg:max-w-7xl lg:px-8">
-        <section aria-labelledby="products-heading" className="mt-6">
-          <h2 id="products-heading" className="sr-only">
-            My Stickers
-          </h2>
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div className="flex items-center justify-between space-x-4">
+          <h2 className="text-lg font-medium text-gray-900">My Stickers</h2>
+        </div>
+        <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
+          {data.map((sticker) => {
+            const isRemoving = removingStickerId === sticker.id;
+            const formattedDeviceName =
+              sticker.deviceType.charAt(0).toUpperCase() +
+              sticker.deviceType.slice(1).toLowerCase();
+            const userPhoneNumber = user?.primaryPhoneNumber?.toString();
+            const formattedPhoneNumber = userPhoneNumber
+              ? formatPhoneNumber(userPhoneNumber)
+              : "";
 
-          {data.length <= 0 && <div>You don&apos;t have any stickers</div>}
-
-          <div className="space-y-8">
-            {data.map((sticker) => {
-              const deviceName = sticker.deviceType;
-              const lowercase = deviceName.toLowerCase();
-              const formattedDeviceName =
-                lowercase.charAt(0).toUpperCase() + lowercase.slice(1);
-
-              const userPhoneNumber = user?.primaryPhoneNumber?.toString();
-              const formattedPhoneNumber = userPhoneNumber
-                ? formatPhoneNumber(userPhoneNumber)
-                : "";
-
-              return (
-                <div
-                  key={`${sticker.id}-sticker`}
-                  className="border-b border-t border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
-                >
-                  <div className="px-4 py-6 sm:px-6 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8">
-                    <div className="sm:flex lg:col-span-7">
-                      <div className="aspect-w-1 aspect-h-1 sm:aspect-none w-full flex-shrink-0 overflow-hidden rounded-lg sm:h-40 sm:w-40">
-                        <a href={`sticker/${sticker.id}`}>
-                          <Image
-                            width={605}
-                            height={500}
-                            src={sticker.stickerType.url}
-                            alt={sticker.stickerType.name}
-                          />
-                        </a>
-                      </div>
-
-                      <div className="mt-6 w-full sm:ml-6 sm:mt-0">
-                        <div className="flex w-full items-center justify-between">
-                          <h3 className="text-base font-medium text-gray-900">
-                            <div>{formattedDeviceName}</div>
-                          </h3>
-                          <Menu
-                            as="div"
-                            className="relative inline-block text-left"
-                          >
-                            <div>
-                              <Menu.Button className=" flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-                                <span className="sr-only">Open options</span>
-                                <EllipsisVerticalIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              </Menu.Button>
-                            </div>
-
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
-                            >
-                              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="py-1">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <a
-                                        href="#"
-                                        className={classNames(
-                                          active
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-red-400",
-                                          "block px-4 py-2 text-sm"
-                                        )}
-                                        onClick={() =>
-                                          handleOpenRemoveStickerModal(
-                                            sticker.id
-                                          )
-                                        }
-                                      >
-                                        Remove sticker
-                                      </a>
-                                    )}
-                                  </Menu.Item>
-                                  {/* <Menu.Item>
-                                    {({ active }) => (
-                                      <a
-                                        href="#"
-                                        className={classNames(
-                                          active
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-gray-700",
-                                          "block px-4 py-2 text-sm"
-                                        )}
-                                      >
-                                        Edit sticker
-                                      </a>
-                                    )}
-                                  </Menu.Item>
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <a
-                                        href="#"
-                                        className={classNames(
-                                          active
-                                            ? "bg-gray-100 text-gray-900"
-                                            : "text-gray-700",
-                                          "block px-4 py-2 text-sm"
-                                        )}
-                                      >
-                                        Change contact info
-                                      </a>
-                                    )}
-                                  </Menu.Item> */}
-                                </div>
-                              </Menu.Items>
-                            </Transition>
-                          </Menu>
-                        </div>
-                        <p className="mt-2 text-sm font-medium text-gray-900">
-                          {sticker.stickerType.name}
-                        </p>
-                        <div className="mt-5 flex items-center justify-between border-t border-gray-200 pt-3 text-sm font-medium" />
-                        <a>
-                          <p className="mt-2 text-sm text-gray-500">
-                            {user?.primaryEmailAddress?.toString()}
-                          </p>
-                          <p className="mt-2 text-sm text-gray-500">
-                            {formattedPhoneNumber}
-                          </p>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="mt-6 lg:col-span-5 lg:mt-0 lg:pr-8">
-                      {/* Description and details */}
+            return (
+              <div
+                key={sticker.id}
+                className={`group relative transition-opacity duration-500 ${
+                  isRemoving ? "opacity-0" : "opacity-100"
+                }`}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onTransitionEnd={(event) =>
+                  isRemoving && onTransitionEnd(event, sticker.id)
+                }
+              >
+                <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg bg-gray-100">
+                  <Image
+                    src={sticker.stickerType.url}
+                    alt={sticker.stickerType.name}
+                    className="object-cover object-center"
+                    width={605}
+                    height={500}
+                  />
+                  <div
+                    className="flex items-end p-4 opacity-0 group-hover:opacity-100"
+                    aria-hidden="true"
+                  >
+                    <div className="w-full rounded-md bg-white bg-opacity-75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter">
+                      <a href={`sticker/${sticker.id}`}>View Sticker</a>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-      </main>
+                <div className="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900">
+                  <h3>
+                    <a href={`sticker/${sticker.id}`}>
+                      <span aria-hidden="true" className="absolute inset-0" />
+                      {formattedDeviceName}
+                    </a>
+                  </h3>
+                  <Menu as="div" className="relative inline-block text-left">
+                    <Menu.Button className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                      <EllipsisVerticalIcon
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      />
+                    </Menu.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                href="#"
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm"
+                                )}
+                                onClick={() =>
+                                  handleOpenRemoveStickerModal(sticker.id)
+                                }
+                              >
+                                Remove sticker
+                              </a>
+                            )}
+                          </Menu.Item>
+                          {/* Additional Menu Items */}
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">{userEmail}</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  {formattedPhoneNumber}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Confirmation Modal */}
       <Transition.Root show={open} as={Fragment}>
@@ -240,7 +206,6 @@ export default function MyStickers() {
           onClose={setOpen}
         >
           <div className="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0">
-            {/* Background overlay */}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -252,16 +217,12 @@ export default function MyStickers() {
             >
               <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
-
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="hidden sm:inline-block sm:h-screen sm:align-middle"
               aria-hidden="true"
             >
               &#8203;
             </span>
-
-            {/* Modal panel */}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
