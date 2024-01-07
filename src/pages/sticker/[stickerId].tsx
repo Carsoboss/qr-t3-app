@@ -51,7 +51,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
 
   if (error && error.data && error.data.code === "UNAUTHORIZED") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-start px-4 pt-24 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center justify-start px-4 pb-40 pt-24 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
           {/* Key icon */}
           <svg
