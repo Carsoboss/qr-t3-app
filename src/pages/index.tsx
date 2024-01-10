@@ -64,9 +64,7 @@ const Welcome: NextPage = () => {
   return (
     <>
       <Head>
-        <title>
-          Welcome to QRfound - Secure Your Items with QR Code Stickers
-        </title>
+        <title>QRfound</title>
         <meta
           name="description"
           content="Never lose your items again with QRfound. Add your information to a QR code sticker and easily track your belongings."
