@@ -70,12 +70,12 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
           </svg>
 
           <h2 className="mt-4 pt-2 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Activate your Sticker
+            Activate your QR Code
           </h2>
 
           <p className="pt-6 text-center text-gray-600">
             Sign in or create an <br className="sm:hidden" />
-            account to activate your sticker.
+            account to activate your QR Code.
           </p>
 
           <SignUpButton>
@@ -97,7 +97,7 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
                   />
                 </svg>
                 <span className="pt-4 font-semibold text-white">
-                  Activate sticker
+                  Activate QR Code
                 </span>
               </div>
             </div>
@@ -145,20 +145,16 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
       <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-3">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              {formattedDeviceName} Lost
+             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+                {data.owner.firstName ? `Contact ${data.owner.firstName}${data.owner.lastName ? ` ${data.owner.lastName}` : ''}` : 'Contact Me'}
             </h2>
-            <div className="relative mx-auto mb-4 mt-6 h-60 w-full">
-              <Image
-                src={data.stickerType.url}
-                alt={data.stickerType.name}
-                layout="fill"
-                objectFit="contain"
-                // width={448}
-                // height={224}
-                priority
-              />
-            </div>
+
+            <div className="relative mx-auto mb-4 mt-6 h-60 w-full flex justify-center items-center">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-48 h-48 text-violet-400">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+  </svg>
+</div>
+
             <p className="mt-2 text-center text-sm text-gray-800">
               This {formattedDeviceName} has been lost.
             </p>
