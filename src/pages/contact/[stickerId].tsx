@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { LoadingPage } from "@qrfound/components/navigation/loading";
 import { api } from "@qrfound/utils/api";
-import Image from "next/image";
 import { SignUpButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
@@ -145,12 +144,21 @@ const StickerDetails: React.FC<StickerDetailsProps> = ({ stickerId }) => {
       <div className="flex min-h-full items-center justify-center px-4 py-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-3">
           <div>
-             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-                {data.owner.firstName ? `Contact ${data.owner.firstName}${data.owner.lastName ? ` ${data.owner.lastName}` : ''}` : 'Contact Me'}
-            </h2>
+<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+  {data.owner.firstName ? (
+    <>
+      Contact <br /> {data.owner.firstName} {data.owner.lastName && ` ${data.owner.lastName}`}
+    </>
+  ) : (
+    <>
+      Contact Me
+    </>
+  )}
+</h2>
+
 
             <div className="relative mx-auto mb-4 mt-6 h-60 w-full flex justify-center items-center">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-48 h-48 text-violet-400">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-48 h-48 text-gray-400">
     <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
   </svg>
 </div>
